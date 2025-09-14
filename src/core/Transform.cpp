@@ -17,8 +17,6 @@ Transform::Transform() :
 void Transform::start()
 {
 	m_ownerRb = m_owner->getComponent<RigidBody>()->rb;
-	if (m_ownerRb)
-		m_owner->getComponent<RigidBody>()->hi();
 }
 
 void Transform::update(float deltaTime)

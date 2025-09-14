@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <vector>
+#include <string>
 
 
 class Scene {
@@ -24,5 +25,8 @@ protected:
 	bool m_updatingEntities;
 	class Renderer* renderer;
 	class PhysicalWorld* physicalWorld;
+	std::vector<class Model* > m_models;
+
+	class Model* createModel(std::string path);
 	
 };

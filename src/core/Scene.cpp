@@ -8,6 +8,7 @@
 #include "../graphics/Skybox.h"
 #include "../graphics/Shader.h"
 #include "../physics/PhysicalWorld.h"
+#include "../graphics/Model.h"
 
 //Renderer* renderer;
 Skybox* skybox;
@@ -135,6 +136,17 @@ void Scene::render()
 void Scene::destroy()
 {
 	physicalWorld->physicsShutdown();
+
+	int countDeleteds = 0;
+	for(auto m : m_models)
+	{
+		delete m;
+		countDeleteds++;
+		std::cout << countDeleteds << " modelo(s) deletados... \n";
+	}
+
+	m_models.clear();
+
 	delete skybox;
 	delete skyShader;
 	delete renderer;
@@ -169,6 +181,13 @@ void Scene::processInput(GLFWwindow* window)
 		mainCamera->ProcessKeyboard(Camera_Movement::LEFT, m_engine->m_deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		mainCamera->ProcessKeyboard(Camera_Movement::RIGHT, m_engine->m_deltaTime);
+}
+
+Model* Scene::createModel(std::string path)
+{
+	Model* model = new Model(path.c_str());
+	m_models.push_back(model);
+	return model;
 }
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
