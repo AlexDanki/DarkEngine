@@ -1,0 +1,10 @@
+#pragma once
+#include "../core/Entity.h"
+
+class Guy : public Entity
+{
+public:
+	Guy(class Shader* shader = nullptr);
+	void start() override;
+	void update(double deltaTime) override;
+};
