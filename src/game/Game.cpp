@@ -8,6 +8,7 @@
 #include "../core/Window.h"
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scrool_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 Scene* curScene;
 Camera* camera;
@@ -31,6 +32,7 @@ void Game::start()
 	//Engine::start();
 	//sceneManager->getCurrentScene()->init();
 	glfwSetCursorPosCallback(m_window, mouse_callback);
+	glfwSetScrollCallback(m_window, scrool_callback);
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	sceneManager->changeScene(new SceneLevelFPS(this));
 	//sceneManager->getCurrentScene()->init();
@@ -100,4 +102,9 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 	lastY = ypos;
 
 	camera->ProcessMouseMovement(xoffset, yoffset);
+}
+
+void scrool_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	camera->ProcessScrool(yoffset);
 }

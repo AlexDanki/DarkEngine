@@ -6,11 +6,13 @@
 #include "DefaultScene.h"
 #include "../physics/PhysicalWorld.h"
 #include "Window.h"
+#include <SDL.h>
 
 void frameBufferResizeCallback(GLFWwindow* window, int width, int height);
 
 bool start = false;
 double tempo = 0;
+TimeManager timeManager(60);
 
 Engine::Engine():
 	m_window(nullptr), 
@@ -31,6 +33,7 @@ Engine::~Engine()
 
 void Engine::init()
 {
+
     /* Initialize the library */
     if (!glfwInit())
         std::cerr << "Failed to initialize GLFW" << std::endl;;
@@ -54,24 +57,19 @@ void Engine::init()
     sceneManager->changeScene(defaultScene);
     //start();
 
+    m_ticksCount = SDL_GetTicks();
     isRunning = true;
+    
 }
 
 void Engine::run()
 {
-	TimeManager timer(60.0);
-    /* Loop until the user closes the window */
+
     while (isRunning && !glfwWindowShouldClose(m_window))
     {
-		timer.startTime();
-
-		processInput();
-		update();
-		render();
-
-		timer.endTime();
-		timer.sleepIfNeeded();
-		m_deltaTime = timer.getDeltaTime();
+        processInput();
+        update();
+        render();
     }
 }
 
@@ -109,7 +107,20 @@ void Engine::processInput()
 
 void Engine::update()
 {
+    
+    //while (!SDL_TICKS_PASSED(SDL_GetTicks(), m_ticksCount + 32));
+
+    //m_deltaTime = (SDL_GetTicks() - m_ticksCount) / 1000.0f;
+
+    //if (m_deltaTime > 0.05f)
+        //m_deltaTime = 0.05f;
+
+    //m_ticksCount = SDL_GetTicks();
+    timeManager.startTime();
 	sceneManager->updateCurrentScene(m_deltaTime);
+    timeManager.endTime();
+    timeManager.sleepIfNeeded();
+    m_deltaTime = timeManager.getDeltaTime();
 }
 
 void Engine::render()

@@ -1,7 +1,8 @@
 # Iniciar PhisicalWorld  ->> ( FEITO )
-# Trocar controle de fps pela forma de se fazer com SDL
-# Criar câmera com comportamento de um game-editor 
-# Criar sistema de colisores estilizados para o Bullet 
+# Trocar controle de fps pela forma de se fazer com SDL ->> " ( FEITO ) "
+# Criar sistema de colisores estilizados para o Bullet ->> ( FEITO )
+# Criar câmera com comportamento de um game-editor ->> ( FEITO )
+
 # Criar parentesco entre os objetos
 # Fazer a câmera ser filha do player
 # Criar controle de câmera padrão de jogos FPS 

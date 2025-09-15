@@ -38,11 +38,16 @@ public:
 	
 	glm::mat4 getViewMatrix();
 
-	void ProcessKeyboard(Camera_Movement direction, float deltaTime);
+	void getEngine(class Engine* _engine) { m_engine = _engine; };
 
-	void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
+	virtual void ProcessKeyboard(Camera_Movement direction, float deltaTime) = 0;
 
-private:
+	virtual void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true) = 0;
+
+	virtual void ProcessScrool(double yoffset) = 0;
+
+protected:
+	class Engine* m_engine = nullptr;
 	void updateCameraVectors();
 
 };

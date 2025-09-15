@@ -27,6 +27,7 @@ protected:
 	SceneManager* sceneManager;
 	Renderer* renderer;
 	class PhysicalWorld* physicalWorld;
+	uint32_t m_ticksCount;
 
 	virtual void start();
 	virtual void processInput();
