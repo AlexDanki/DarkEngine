@@ -8,12 +8,16 @@
 #include "bullet/btBulletDynamicsCommon.h"
 #include "../physics/RigidBody.h"
 #include "bullet/btBulletCollisionCommon.h"
+#include "../util//MeshLoader.h"
 
 Shader* shader;
 
 void Test();
 
 bool firstTime = true;
+
+MeshLoader meshLoader;
+std::vector<btVector3> bulletVertices;
 
 void SceneLevelFPS::init()
 {
@@ -23,26 +27,21 @@ void SceneLevelFPS::init()
 	shader = new Shader("./shaders/vertex.glsl", "./shaders/fragment.glsl");
 
 
-	// GUY'S
+	// GUY
 	auto guyModel = createModel("./assets/models/guy/guy.obj");
-	for(int i = 0; i < 30; i++)
-	{
-		Entity* guy = new Guy(shader);
-		auto guyTransform = guy->transform;
-		guyTransform->setPosition(glm::vec3(i*0.1f, 3*i, 0.0));
-		guy->setModel(guyModel);
-		guy->setName("guy");
-		//guy->addComponent<HelloGuy>();
-		btCollisionShape* shape1 = new btCapsuleShape(0.3f, 1.2f);
-		guy->addComponent<RigidBody>(guyTransform->position, shape1, physicalWorld, false, 10, 0.5);
-		addEntity(guy);
-
-	}
+	Entity* guy = new Guy(shader);
+	auto guyTransform = guy->transform;
+	guyTransform->setPosition(glm::vec3(0.1, 15, 0.0));
+	guy->setModel(guyModel);
+	guy->setName("guy");
+	btCollisionShape* shape1 = new btCapsuleShape(0.3f, 1.2f);
+	guy->addComponent<RigidBody>(guyTransform->position, shape1, physicalWorld, false, 10, 0.5);
+	addEntity(guy);
 
 	// GROUND
 	auto groundModel = createModel("./assets/models/ground/ground.obj");
 	auto ground = new Entity(shader);
-	btCollisionShape* shape2 = new btBoxShape(btVector3(13.0f, 0.05f, 13.0f));
+	btCollisionShape* shape2 = new btBoxShape(btVector3(13, 0.01, 13));
 	ground->addComponent<RigidBody>(ground->getComponent<Transform>()->position, shape2, physicalWorld, true, 0, 0.5f);
 	ground->setModel(groundModel);
 	addEntity(ground);
@@ -53,7 +52,8 @@ void SceneLevelFPS::init()
 	auto bunkerTransform = bunker->getComponent<Transform>();
 	bunkerTransform->setPosition(glm::vec3(0, 0.2, 0));
 	bunkerTransform->setScale(glm::vec3(0.5, 0.5, 0.5));
-	btCollisionShape* shape3 = new btBoxShape(btVector3(1.5f, 0.5f, 1.5f));
+	meshLoader.loadVertices("./assets/models/ruby/ruby.obj", bulletVertices);
+	btConvexHullShape* shape3 = meshLoader.createShape(bulletVertices);
 	bunker->addComponent<RigidBody>(bunker->getComponent<Transform>()->position, shape3, physicalWorld, true, 0, 0.5f);
 	bunker->setModel(bunkerModel);
 	addEntity(bunker);
@@ -66,12 +66,12 @@ void SceneLevelFPS::init()
 void SceneLevelFPS::update(float deltaTime)
 {
 	Scene::update(deltaTime);
+	renderer->UpdateCameraView(mainCamera, shader);
 }
 
 void SceneLevelFPS::render()
 {	
 	Scene::render();
-	renderer->UpdateCameraView(mainCamera, shader);
 	
 }
 

@@ -1,7 +1,8 @@
 #include "Engine.h"
 #include "../core/Entity.h"
 #include <iostream>
-#include "../graphics/Camera.h"
+#include "../graphics/CameraFly.h"
+#include "../graphics/EditorCamera.h"
 #include <glfw/glfw3.h>
 #include "../graphics/Renderer.h"
 #include "./Scene.h"
@@ -20,6 +21,8 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 
 unsigned int cubmapTexture;
 
+const bool EDIT_MODE = true;
+
 Scene::Scene(Engine* engine) :
 	m_engine(engine),
 	m_updatingEntities(false),
@@ -37,7 +40,9 @@ void Scene::init()
 {
 	glfwSetKeyCallback(m_engine->getWindow(), keyCallback);
 
-	mainCamera = new Camera();
+	
+	EDIT_MODE == true ? mainCamera = new EditorCamera()  :mainCamera = new CameraFly() ;
+	mainCamera->getEngine(m_engine);
 	renderer = new Renderer();
 	renderer->init();
 	skybox = new Skybox();
