@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "../core/Entity.h"
 #include <iostream>
+#include "../graphics/Camera.h"
 #include "../graphics/CameraFly.h"
 #include "../graphics/EditorCamera.h"
 #include <glfw/glfw3.h>
@@ -21,7 +22,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 
 unsigned int cubmapTexture;
 
-const bool EDIT_MODE = true;
+const bool EDIT_MODE = false;
 
 Scene::Scene(Engine* engine) :
 	m_engine(engine),

@@ -1,5 +1,6 @@
 #include "SceneLevelFPS.h"
 #include "../graphics/Shader.h"
+#include "../graphics/CameraFly.h"
 #include <iostream>
 #include "../core/Transform.h"
 #include "../core/Entity.h"
@@ -28,15 +29,26 @@ void SceneLevelFPS::init()
 
 
 	// GUY
-	auto guyModel = createModel("./assets/models/guy/guy.obj");
 	Entity* guy = new Guy(shader);
 	auto guyTransform = guy->transform;
 	guyTransform->setPosition(glm::vec3(0.1, 15, 0.0));
+	auto guyModel = createModel("./assets/models/guy/guy.obj");
 	guy->setModel(guyModel);
 	guy->setName("guy");
 	btCollisionShape* shape1 = new btCapsuleShape(0.3f, 1.2f);
 	guy->addComponent<RigidBody>(guyTransform->position, shape1, physicalWorld, false, 10, 0.5);
 	addEntity(guy);
+
+	// GUY2
+	Entity* guy2 = new Guy(shader, guy);
+	auto guyTransform2 = guy2->transform;
+	guyTransform2->setPosition(glm::vec3(0, 2, 0.0));
+	guyTransform2->setRotation(glm::vec3(0.0, 0.0, -90.0));
+	guy2->setModel(guyModel);
+	guy2->setName("guy2");
+	addEntity(guy2);
+
+	//guy->removeChild(guy2);
 
 	// GROUND
 	auto groundModel = createModel("./assets/models/ground/ground.obj");

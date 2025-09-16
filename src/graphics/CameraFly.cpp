@@ -1,6 +1,13 @@
 #include "CameraFly.h"
+#include "Shader.h"
+//#include "../core/Entity.h"
 
 CameraFly::CameraFly(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
+{
+}
+
+CameraFly::CameraFly(Shader* _shader, Entity* _parent):
+    Camera(_shader, _parent)
 {
 }
 

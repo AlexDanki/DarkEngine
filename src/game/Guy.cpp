@@ -3,7 +3,7 @@
 
 float angle = 0;
 
-Guy::Guy(Shader* shader) : Entity(shader)
+Guy::Guy(Shader* shader, Entity* _parent) : Entity(shader, _parent)
 {
 }
 

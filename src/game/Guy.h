@@ -4,7 +4,7 @@
 class Guy : public Entity
 {
 public:
-	Guy(class Shader* shader = nullptr);
+	Guy(class Shader* shader = nullptr, Entity* _parent = nullptr);
 	void start() override;
 	void update(double deltaTime) override;
 };

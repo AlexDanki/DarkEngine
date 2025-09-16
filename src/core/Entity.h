@@ -6,6 +6,7 @@
 #include <memory>
 #include <iostream>
 #include <string>
+#include <vector>
 
 enum E_State {
 	E_ACTIVE,
@@ -15,16 +16,24 @@ enum E_State {
 
 class Entity {
 public:
-	Entity(class Shader* shader = nullptr);
-	std::string name = "Entity";
+	Entity(class Shader* shader = nullptr, Entity* _parent = nullptr);
 	class Model* model;
 	std::shared_ptr<Transform> transform;
 	E_State m_state;
-
+	
+	// Identificação 
 	void setName(std::string _name) { name = _name; }
+	std::string getName() const { return name; }
+	// Modelo
 	void setModel(class Model* m) { model = m; }
-	//void setTransform(class Transform* t) { transform = t; }
 
+	// Hierarquia
+	void setParent(Entity* newParent);
+	virtual Entity* getParent() const;
+	void addChild(Entity* child);
+	void removeChild(Entity* child);
+
+	// Components
 	template<typename T, typename... Args>
 	void addComponent(Args&&... args)
 	{
@@ -55,15 +64,19 @@ public:
 		components.erase(typeid(T));
 	}
 
-	
+	// setup
 	virtual void start();
 	virtual void update(double deltaTime);
+
+	// render
 	void draw();
 	class Shader* getShader() { return m_shader; }
-
 	bool hasAShader() { return m_shader != nullptr; }
 
 private:
+	std::string name = "Entity";
+	Entity* parent;
+	std::vector<Entity*> childrens;
 	class Shader* m_shader;
 	std::unordered_map<std::type_index, std::shared_ptr<Component>> components;
 

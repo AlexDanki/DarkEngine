@@ -2,6 +2,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "../core/Entity.h"
 //#include <glm/gtx/euler_angles.hpp>
 
 
@@ -19,7 +20,7 @@ const float PITCH = 0.0f;
 const float SPEED = 10.0f;
 const float SENSITIVITY = 0.1f;
 
-class Camera {
+class Camera : public Entity{
 public:
 	// camera Attributes
 	glm::vec3 Position;
@@ -35,7 +36,7 @@ public:
 	float MouseSensitivity;
 
 	Camera(glm::vec3 position = glm::vec3(0.0f, 10.0f, 30.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
-	
+	Camera(class Shader* _shader, class Entity* _parent);
 	glm::mat4 getViewMatrix();
 
 	void getEngine(class Engine* _engine) { m_engine = _engine; };

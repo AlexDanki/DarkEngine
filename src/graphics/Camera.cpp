@@ -1,14 +1,22 @@
 #include "Camera.h"
+#include "Shader.h"
 
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
-    : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY)
+    : Front(glm::vec3(0.0f, 0.0f, -1.0f)), 
+    MovementSpeed(SPEED), 
+    MouseSensitivity(SENSITIVITY)
 {
     Position = position;
     WorldUp = up;
     Yaw = yaw;
     Pitch = pitch;
     updateCameraVectors();
+}
+
+Camera::Camera(Shader* _shader, Entity* _parent):
+    Entity(_shader, _parent)
+{
 }
 
 glm::mat4 Camera::getViewMatrix()
