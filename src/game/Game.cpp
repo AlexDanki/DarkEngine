@@ -7,9 +7,6 @@
 #include "../graphics/Camera.h"
 #include "../core/Window.h"
 
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scrool_callback(GLFWwindow* window, double xoffset, double yoffset);
-
 Scene* curScene;
 Camera* camera;
 bool firstMouse = true;
@@ -31,8 +28,6 @@ void Game::start()
 {
 	//Engine::start();
 	//sceneManager->getCurrentScene()->init();
-	glfwSetCursorPosCallback(m_window, mouse_callback);
-	glfwSetScrollCallback(m_window, scrool_callback);
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	sceneManager->changeScene(new SceneLevelFPS(this));
 	//sceneManager->getCurrentScene()->init();
@@ -55,7 +50,7 @@ void Game::init()
 void Game::processInput()
 {
 	Engine::processInput();
-	sceneManager->getCurrentScene()->processInput(m_window);
+	//sceneManager->getCurrentScene()->processInput(m_window);
 }
 
 void Game::update()
@@ -82,29 +77,3 @@ void Game::shutdown()
 	
 }
 
-
-void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
-{
-	float xpos = static_cast<float>(xposIn);
-	float ypos = static_cast<float>(yposIn);
-
-	if (firstMouse)
-	{
-		lastX = xpos;
-		lastY = ypos;
-		firstMouse = false;
-	}
-
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-	lastX = xpos;
-	lastY = ypos;
-
-	camera->ProcessMouseMovement(xoffset, yoffset);
-}
-
-void scrool_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-	camera->ProcessScrool(yoffset);
-}

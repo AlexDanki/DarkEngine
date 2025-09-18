@@ -1,6 +1,5 @@
 #include "SceneLevelFPS.h"
 #include "../graphics/Shader.h"
-#include "../graphics/CameraFly.h"
 #include <iostream>
 #include "../core/Transform.h"
 #include "../core/Entity.h"
@@ -14,6 +13,7 @@
 Shader* shader;
 
 void Test();
+Entity* guy;
 
 bool firstTime = true;
 
@@ -29,9 +29,9 @@ void SceneLevelFPS::init()
 
 
 	// GUY
-	Entity* guy = new Guy(shader);
+	guy = new Guy(shader);
 	auto guyTransform = guy->transform;
-	guyTransform->setPosition(glm::vec3(0.1, 15, 0.0));
+	guyTransform->setPosition(glm::vec3(0, 10, -5.0));
 	auto guyModel = createModel("./assets/models/guy/guy.obj");
 	guy->setModel(guyModel);
 	guy->setName("guy");
@@ -39,8 +39,18 @@ void SceneLevelFPS::init()
 	guy->addComponent<RigidBody>(guyTransform->position, shape1, physicalWorld, false, 10, 0.5);
 	addEntity(guy);
 
+	mainCamera = new Camera(shader, guy);
+	auto camModel = createModel("./assets/models/camera/camera.obj");
+	auto camTransform = mainCamera->transform;
+	camTransform->setPosition(glm::vec3(0, 1, 0.0));
+	camTransform->setScale(glm::vec3(0.1, 0.1, 0.1));
+	camTransform->setRotation(glm::vec3(0.0, 0.0, 0.0));
+	mainCamera->setModel(camModel);
+	mainCamera->getEngine(m_engine);
+	addEntity(mainCamera);
+
 	// GUY2
-	Entity* guy2 = new Guy(shader, guy);
+	Entity* guy2 = new Guy(shader);
 	auto guyTransform2 = guy2->transform;
 	guyTransform2->setPosition(glm::vec3(0, 2, 0.0));
 	guyTransform2->setRotation(glm::vec3(0.0, 0.0, -90.0));
@@ -78,7 +88,13 @@ void SceneLevelFPS::init()
 void SceneLevelFPS::update(float deltaTime)
 {
 	Scene::update(deltaTime);
+	//mainCamera->updatePos(guy->getComponent<Transform>()->position);
 	renderer->UpdateCameraView(mainCamera, shader);
+	if (!mainCamera) {
+		std::cerr << "mainCamera is null!" << std::endl;
+		return;
+	}
+	
 }
 
 void SceneLevelFPS::render()

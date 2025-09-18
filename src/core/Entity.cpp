@@ -75,7 +75,7 @@ void Entity::start()
 	}
 }
 
-void Entity::update(double deltaTime)
+void Entity::update(float deltaTime)
 {
 	if (m_state == E_DISABLED) return;
 

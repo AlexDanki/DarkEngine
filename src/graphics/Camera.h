@@ -8,17 +8,9 @@
 
 //typedef bool GLboolean;
 
-enum Camera_Movement {
-	FORWARD,
-	BACKWARD,
-	LEFT,
-	RIGHT
-};
-
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
-const float SPEED = 10.0f;
-const float SENSITIVITY = 0.1f;
+
 
 class Camera : public Entity{
 public:
@@ -31,21 +23,14 @@ public:
 
 	float Yaw;
 	float Pitch;
-	// camera options
-	float MovementSpeed;
-	float MouseSensitivity;
 
-	Camera(glm::vec3 position = glm::vec3(0.0f, 10.0f, 30.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
-	Camera(class Shader* _shader, class Entity* _parent);
+
+	//Camera(glm::vec3 position = glm::vec3(0.0f, 10.0f, 30.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
+	Camera(class Shader* _shader, class Entity* _parent = nullptr);
 	glm::mat4 getViewMatrix();
 
 	void getEngine(class Engine* _engine) { m_engine = _engine; };
-
-	virtual void ProcessKeyboard(Camera_Movement direction, float deltaTime) = 0;
-
-	virtual void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true) = 0;
-
-	virtual void ProcessScrool(double yoffset) = 0;
+	void updatePos(glm::vec3 pos);
 
 protected:
 	class Engine* m_engine = nullptr;

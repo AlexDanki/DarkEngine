@@ -12,7 +12,7 @@ void Guy::start()
 	Entity::start();
 }
 
-void Guy::update(double deltaTime)
+void Guy::update(float deltaTime)
 {
 	Entity::update(deltaTime);
 }

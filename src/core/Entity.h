@@ -1,5 +1,6 @@
 #pragma once
 #include "../core/Transform.h"
+#include "../physics/RigidBody.h"
 #include <unordered_map>
 #include <typeindex>
 #include "./Component.h"
@@ -66,14 +67,14 @@ public:
 
 	// setup
 	virtual void start();
-	virtual void update(double deltaTime);
+	virtual void update(float deltaTime);
 
 	// render
 	void draw();
 	class Shader* getShader() { return m_shader; }
 	bool hasAShader() { return m_shader != nullptr; }
 
-private:
+protected:
 	std::string name = "Entity";
 	Entity* parent;
 	std::vector<Entity*> childrens;

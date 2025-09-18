@@ -1,0 +1,44 @@
+﻿#include <glm/gtx/matrix_decompose.hpp> //incluir esta biblioteca para decompor uma matriz 
+
+glm::vec3 scale;
+glm::quat rotationQuat;
+glm::vec3 translation;
+glm::vec3 skew;
+glm::vec4 perspective;
+
+
+//Função usada para decompor a matriz
+glm::decompose(matrix, scale, rotationQuat, translation, skew, perspective);
+
+📚 Conteúdos específicos que você pode estudar
+1. Álgebra Linear
+Operações com vetores e matrizes
+
+Matrizes de transformação (translação, rotação, escala)
+
+Produto de matrizes
+
+Autovalores e autovetores (mais avançado)
+
+2. Geometria Analítica
+Sistema de coordenadas 3D
+
+Equações de retas e planos
+
+Distância entre pontos e projeções
+
+3. Trigonometria
+Funções trigonométricas
+
+Conversão entre graus e radianos
+
+Ângulos de Euler e quaternions
+
+4. Computação Gráfica
+Espaço local vs. global
+
+Hierarquia de transformações
+
+Pipeline gráfico (model → view → projection)
+
+OpenGL / Vulkan / DirectX (se quiser ir fundo)
