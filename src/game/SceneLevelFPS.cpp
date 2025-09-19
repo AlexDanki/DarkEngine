@@ -49,14 +49,23 @@ void SceneLevelFPS::init()
 	mainCamera->getEngine(m_engine);
 	addEntity(mainCamera);
 
+	// Shotgun
+	auto shotgunModel = createModel("./assets/models/shotgun/shotgun.obj");
+	auto shotgun = new Entity(shader, mainCamera);
+	auto shotgunTransform = shotgun->getComponent<Transform>();
+	shotgunTransform->setPosition(glm::vec3(-2, -1.5, 4));
+	shotgunTransform->setScale(glm::vec3(3, 3, 3));
+	shotgun->setModel(shotgunModel);
+	addEntity(shotgun);
+
 	// GUY2
-	Entity* guy2 = new Guy(shader);
+	/*Entity* guy2 = new Guy(shader);
 	auto guyTransform2 = guy2->transform;
 	guyTransform2->setPosition(glm::vec3(0, 2, 0.0));
 	guyTransform2->setRotation(glm::vec3(0.0, 0.0, -90.0));
 	guy2->setModel(guyModel);
 	guy2->setName("guy2");
-	addEntity(guy2);
+	addEntity(guy2);*/
 
 	//guy->removeChild(guy2);
 

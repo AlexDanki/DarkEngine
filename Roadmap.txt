@@ -3,9 +3,9 @@
 # Criar sistema de colisores estilizados para o Bullet ->> ( FEITO )
 # Criar câmera com comportamento de um game-editor ->> ( FEITO )
 # Criar parentesco entre os objetos ->> ( FEITO )
+# Fazer a câmera ser filha do player ->> (FEITO)
 
-# Fazer a câmera ser filha do player 
-# Criar controle de câmera padrão de jogos FPS 
+# Criar class Camera_FPS ( TRABALHANDO )
 # Adicionar Character controle ao player
 # Adicionar arma ao player
 

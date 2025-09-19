@@ -12,6 +12,7 @@ void Model::loadModel(string const& path)
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
     // check for errors
+
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
     {
         cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << endl;
@@ -169,7 +170,7 @@ unsigned int Model::TextureFromFile(const char* path, const string& directory, b
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        stbi_set_flip_vertically_on_load(true);
+        //stbi_set_flip_vertically_on_load(true);
         stbi_image_free(data);
     }
     else

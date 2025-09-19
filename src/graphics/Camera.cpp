@@ -5,7 +5,7 @@
 Camera::Camera(Shader* _shader, Entity* _parent):
     Entity(_shader, _parent)
 {
-    Position = glm::vec3(0, 3, 5);
+    Position = glm::vec3(0, 4, -1);
     WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
     Yaw = YAW;
     Pitch = PITCH;
@@ -24,7 +24,7 @@ glm::mat4 Camera::getViewMatrix()
     glm::vec3 front = glm::vec3(globalMatrix[2]);
     glm::vec3 right = glm::vec3(globalMatrix[0]);
     glm::vec3 up = glm::vec3(globalMatrix[1]);
-    return glm::lookAt(Position, pos + front, up);
+    return glm::lookAt(pos, pos + front, up);
 }
 
 void Camera::updateCameraVectors()
