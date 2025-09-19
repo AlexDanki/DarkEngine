@@ -13,6 +13,7 @@
 Shader* shader;
 
 void Test();
+Entity* guy;
 
 bool firstTime = true;
 
@@ -28,15 +29,45 @@ void SceneLevelFPS::init()
 
 
 	// GUY
-	auto guyModel = createModel("./assets/models/guy/guy.obj");
-	Entity* guy = new Guy(shader);
+	guy = new Guy(shader);
 	auto guyTransform = guy->transform;
-	guyTransform->setPosition(glm::vec3(0.1, 15, 0.0));
+	guyTransform->setPosition(glm::vec3(0, 10, -5.0));
+	auto guyModel = createModel("./assets/models/guy/guy.obj");
 	guy->setModel(guyModel);
 	guy->setName("guy");
 	btCollisionShape* shape1 = new btCapsuleShape(0.3f, 1.2f);
 	guy->addComponent<RigidBody>(guyTransform->position, shape1, physicalWorld, false, 10, 0.5);
 	addEntity(guy);
+
+	mainCamera = new Camera(shader, guy);
+	auto camModel = createModel("./assets/models/camera/camera.obj");
+	auto camTransform = mainCamera->transform;
+	camTransform->setPosition(glm::vec3(0, 1, 0.0));
+	camTransform->setScale(glm::vec3(0.1, 0.1, 0.1));
+	camTransform->setRotation(glm::vec3(0.0, 0.0, 0.0));
+	mainCamera->setModel(camModel);
+	mainCamera->getEngine(m_engine);
+	addEntity(mainCamera);
+
+	// Shotgun
+	auto shotgunModel = createModel("./assets/models/shotgun/shotgun.obj");
+	auto shotgun = new Entity(shader, mainCamera);
+	auto shotgunTransform = shotgun->getComponent<Transform>();
+	shotgunTransform->setPosition(glm::vec3(-2, -1.5, 4));
+	shotgunTransform->setScale(glm::vec3(3, 3, 3));
+	shotgun->setModel(shotgunModel);
+	addEntity(shotgun);
+
+	// GUY2
+	/*Entity* guy2 = new Guy(shader);
+	auto guyTransform2 = guy2->transform;
+	guyTransform2->setPosition(glm::vec3(0, 2, 0.0));
+	guyTransform2->setRotation(glm::vec3(0.0, 0.0, -90.0));
+	guy2->setModel(guyModel);
+	guy2->setName("guy2");
+	addEntity(guy2);*/
+
+	//guy->removeChild(guy2);
 
 	// GROUND
 	auto groundModel = createModel("./assets/models/ground/ground.obj");
@@ -66,7 +97,13 @@ void SceneLevelFPS::init()
 void SceneLevelFPS::update(float deltaTime)
 {
 	Scene::update(deltaTime);
+	//mainCamera->updatePos(guy->getComponent<Transform>()->position);
 	renderer->UpdateCameraView(mainCamera, shader);
+	if (!mainCamera) {
+		std::cerr << "mainCamera is null!" << std::endl;
+		return;
+	}
+	
 }
 
 void SceneLevelFPS::render()

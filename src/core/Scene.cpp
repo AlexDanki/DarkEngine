@@ -1,8 +1,6 @@
 #include "Engine.h"
 #include "../core/Entity.h"
 #include <iostream>
-#include "../graphics/CameraFly.h"
-#include "../graphics/EditorCamera.h"
 #include <glfw/glfw3.h>
 #include "../graphics/Renderer.h"
 #include "./Scene.h"
@@ -21,7 +19,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 
 unsigned int cubmapTexture;
 
-const bool EDIT_MODE = true;
+const bool EDIT_MODE = false;
 
 Scene::Scene(Engine* engine) :
 	m_engine(engine),
@@ -40,11 +38,15 @@ void Scene::init()
 {
 	glfwSetKeyCallback(m_engine->getWindow(), keyCallback);
 
+	// MainCamera Init
+	//mainCamera = new Camera();
 	
-	EDIT_MODE == true ? mainCamera = new EditorCamera()  :mainCamera = new CameraFly() ;
-	mainCamera->getEngine(m_engine);
+
+	// Render Init
 	renderer = new Renderer();
 	renderer->init();
+
+	// Skybox Init
 	skybox = new Skybox();
 	skybox->setupMesh();
 	skyShader = new Shader("./shaders/skybox.vert", "./shaders/skybox.frag");
@@ -62,6 +64,7 @@ void Scene::init()
 
 	cubmapTexture = skybox->loadCubeMap(faces);
 
+	// Entitys Init
 	for(auto& pair : renderGroups)
 	{
 		for(Entity* e : pair.second)
@@ -176,17 +179,7 @@ void Scene::addEntity(Entity* entity)
 
 }
 
-void Scene::processInput(GLFWwindow* window)
-{
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) 
-		mainCamera->ProcessKeyboard(Camera_Movement::FORWARD, m_engine->m_deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		mainCamera->ProcessKeyboard(Camera_Movement::BACKWARD, m_engine->m_deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		mainCamera->ProcessKeyboard(Camera_Movement::LEFT, m_engine->m_deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		mainCamera->ProcessKeyboard(Camera_Movement::RIGHT, m_engine->m_deltaTime);
-}
+
 
 Model* Scene::createModel(std::string path)
 {

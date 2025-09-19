@@ -2,9 +2,13 @@
 # Trocar controle de fps pela forma de se fazer com SDL ->> " ( FEITO ) "
 # Criar sistema de colisores estilizados para o Bullet ->> ( FEITO )
 # Criar câmera com comportamento de um game-editor ->> ( FEITO )
+# Criar parentesco entre os objetos ->> ( FEITO )
+# Fazer a câmera ser filha do player ->> (FEITO)
 
-# Criar parentesco entre os objetos
-# Fazer a câmera ser filha do player
-# Criar controle de câmera padrão de jogos FPS 
+# Criar class Camera_FPS ( TRABALHANDO )
 # Adicionar Character controle ao player
 # Adicionar arma ao player
+
+Estou criando uma game-engine usando c++, tenho uma classe Entity que representa meus game objects.
+Poderia me ajudar a entender como criar parentescos entre esses objetos? Poderia me gerar um entity.h 
+e entity.cpp com todos os metodos necessários para isso e em seguida detalhar oque cada um faz?

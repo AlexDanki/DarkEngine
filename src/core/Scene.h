@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <vector>
+#include "../graphics/Camera.h"
 #include <string>
 
 
@@ -8,7 +9,7 @@ class Scene {
 public:
 	Scene(class Engine* engine);
 
-	class Camera* mainCamera;
+	Camera* mainCamera;
 	virtual void init() = 0;
 	virtual void update(float deltaTime);
 	virtual void render();

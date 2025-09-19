@@ -4,6 +4,7 @@
 #include "../physics/RigidBody.h"
 #include "bullet/btBulletCollisionCommon.h"
 #include "Entity.h"
+#include <vector>
 
 Transform::Transform() :
 	position(0.0f, 0.0f, 0.0f),
@@ -16,7 +17,8 @@ Transform::Transform() :
 
 void Transform::start()
 {
-	m_ownerRb = m_owner->getComponent<RigidBody>()->rb;
+	if(m_owner->hasComponent<RigidBody>())
+		m_ownerRb = m_owner->getComponent<RigidBody>()->rb;
 }
 
 void Transform::update(float deltaTime)
@@ -24,18 +26,38 @@ void Transform::update(float deltaTime)
 	
 }
 
+glm::mat4 Transform::getLocalMatrix()
+{
+	return modelMatrix();
+}
+
+glm::mat4 Transform::getGlobalMatrix()
+{
+	
+	//std::cout << parent->getName() << "\n";
+	Entity* parent = m_owner->getParent();
+
+	if (parent)
+	{
+		return parent -> getComponent<Transform>()->getGlobalMatrix() * getLocalMatrix();
+	}
+	return getLocalMatrix();
+}
+
 glm::mat4 Transform::modelMatrix()
 {
-	btTransform t;
+	
 	glm::mat4 trans = glm::mat4(1.0f);
 
 	if(m_ownerRb)
 	{
 		//m_owner->getComponent<RigidBody>()->hi();
+		btTransform t;
 		m_ownerRb->getMotionState()->getWorldTransform(t);
 
 		btQuaternion rotation = t.getRotation();
 		btVector3 translate = t.getOrigin();
+		
 
 		//std::cout << translate.getY() << " in " << m_owner-> name << "\n";
 
@@ -46,7 +68,7 @@ glm::mat4 Transform::modelMatrix()
 			glm::vec3(translate.getX(), translate.getY(), translate.getZ()));
 
 		glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), scale);
-
+		
 		trans = TranslationMatrix * RotationMatrix * scaleMatrix;
 	}
 	else
@@ -58,6 +80,7 @@ glm::mat4 Transform::modelMatrix()
 		trans = glm::rotate(trans, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0));
 		trans = glm::rotate(trans, glm::radians(rotation.z), glm::vec3(0.0f, 0.0, 1.0f));
 		trans = glm::scale(trans, scale);
+		curPosition = position;
 	}
 	
 	

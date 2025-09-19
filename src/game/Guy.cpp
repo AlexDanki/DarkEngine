@@ -3,7 +3,7 @@
 
 float angle = 0;
 
-Guy::Guy(Shader* shader) : Entity(shader)
+Guy::Guy(Shader* shader, Entity* _parent) : Entity(shader, _parent)
 {
 }
 
@@ -12,7 +12,7 @@ void Guy::start()
 	Entity::start();
 }
 
-void Guy::update(double deltaTime)
+void Guy::update(float deltaTime)
 {
 	Entity::update(deltaTime);
 }
