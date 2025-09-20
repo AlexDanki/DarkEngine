@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../core/Entity.h"
+#include "glfw/glfw3.h"
 //#include <glm/gtx/euler_angles.hpp>
 
 
@@ -31,6 +32,8 @@ public:
 
 	void getEngine(class Engine* _engine) { m_engine = _engine; };
 	void updatePos(glm::vec3 pos);
+
+	virtual void processKeyBoard(GLFWwindow* window, float deltaTime) = 0;
 
 protected:
 	class Engine* m_engine = nullptr;

@@ -24,6 +24,10 @@ public:
 	glm::mat4 getLocalMatrix();
 	glm::mat4 getGlobalMatrix();
 
+	glm::vec3 getFront();
+	glm::vec3 getRight();
+	glm::vec3 getUp();
+
 	glm::mat4 modelMatrix();
 	glm::mat4 viewMatrix();
 	glm::mat4 projMatrix();

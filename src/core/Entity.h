@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <typeindex>
 #include "./Component.h"
+#include "glfw/glfw3.h"
 #include <memory>
 #include <iostream>
 #include <string>
@@ -68,6 +69,7 @@ public:
 	// setup
 	virtual void start();
 	virtual void update(float deltaTime);
+	virtual void processKeyboard(GLFWwindow* window, float deltaTime) {};
 
 	// render
 	void draw();

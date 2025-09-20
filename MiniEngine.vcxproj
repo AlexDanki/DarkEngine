@@ -32,6 +32,7 @@
     <ClCompile Include="src\game\Guy.cpp" />
     <ClCompile Include="src\game\SceneLevelFPS.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
+    <ClCompile Include="src\graphics\CameraFPS.cpp" />
     <ClCompile Include="src\graphics\Mesh.cpp" />
     <ClCompile Include="src\graphics\Model.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
@@ -63,6 +64,7 @@
     <ClInclude Include="src\game\SceneLevelFPS.h" />
     <ClInclude Include="src\game\Triangle.h" />
     <ClInclude Include="src\graphics\Camera.h" />
+    <ClInclude Include="src\graphics\CameraFPS.h" />
     <ClInclude Include="src\graphics\Mesh.h" />
     <ClInclude Include="src\graphics\Model.h" />
     <ClInclude Include="src\graphics\Renderer.h" />

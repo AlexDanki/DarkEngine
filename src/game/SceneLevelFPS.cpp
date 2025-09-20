@@ -9,6 +9,7 @@
 #include "../physics/RigidBody.h"
 #include "bullet/btBulletCollisionCommon.h"
 #include "../util//MeshLoader.h"
+#include "../graphics/CameraFPS.h"
 
 Shader* shader;
 
@@ -39,7 +40,7 @@ void SceneLevelFPS::init()
 	guy->addComponent<RigidBody>(guyTransform->position, shape1, physicalWorld, false, 10, 0.5);
 	addEntity(guy);
 
-	mainCamera = new Camera(shader, guy);
+	mainCamera = new CameraFPS(shader, guy);
 	auto camModel = createModel("./assets/models/camera/camera.obj");
 	auto camTransform = mainCamera->transform;
 	camTransform->setPosition(glm::vec3(0, 1, 0.0));
@@ -103,6 +104,8 @@ void SceneLevelFPS::update(float deltaTime)
 		std::cerr << "mainCamera is null!" << std::endl;
 		return;
 	}
+
+	guy->processKeyboard(m_engine->getWindow(), deltaTime);
 	
 }
 

@@ -44,6 +44,24 @@ glm::mat4 Transform::getGlobalMatrix()
 	return getLocalMatrix();
 }
 
+glm::vec3 Transform::getFront()
+{
+	glm::mat4 globalMatrix = getGlobalMatrix();
+	return globalMatrix[2];
+}
+
+glm::vec3 Transform::getRight()
+{
+	glm::mat4 globalMatrix = getGlobalMatrix();
+	return globalMatrix[0];
+}
+
+glm::vec3 Transform::getUp()
+{
+	glm::mat4 globalMatrix = getGlobalMatrix();
+	return globalMatrix[1];
+}
+
 glm::mat4 Transform::modelMatrix()
 {
 	

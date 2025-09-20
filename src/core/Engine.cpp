@@ -13,6 +13,7 @@ void frameBufferResizeCallback(GLFWwindow* window, int width, int height);
 bool start = false;
 double tempo = 0;
 TimeManager timeManager(60);
+const float FPS = 60;
 
 Engine::Engine():
 	m_window(nullptr), 
@@ -108,19 +109,15 @@ void Engine::processInput()
 void Engine::update()
 {
     
-    //while (!SDL_TICKS_PASSED(SDL_GetTicks(), m_ticksCount + 32));
+    while (!SDL_TICKS_PASSED(SDL_GetTicks(), m_ticksCount + ( FPS / 1000 )));
 
-    //m_deltaTime = (SDL_GetTicks() - m_ticksCount) / 1000.0f;
+    m_deltaTime = (SDL_GetTicks() - m_ticksCount) / 1000.0f;
 
-    //if (m_deltaTime > 0.05f)
-        //m_deltaTime = 0.05f;
+    if (m_deltaTime > 0.05f)
+        m_deltaTime = 0.05f;
 
-    //m_ticksCount = SDL_GetTicks();
-    timeManager.startTime();
+    m_ticksCount = SDL_GetTicks();
 	sceneManager->updateCurrentScene(m_deltaTime);
-    timeManager.endTime();
-    timeManager.sleepIfNeeded();
-    m_deltaTime = timeManager.getDeltaTime();
 }
 
 void Engine::render()
