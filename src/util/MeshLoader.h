@@ -6,4 +6,6 @@
 struct MeshLoader {
 	void loadVertices(const std::string& meshPath, std::vector<btVector3>& bulletVertices );
 	btConvexHullShape* createShape(std::vector<btVector3> _bulletVertices);
+	void loadTriangles(const std::string& meshPath, btTriangleMesh* triMesh);
+	btBvhTriangleMeshShape* createTerrainShape(btTriangleMesh* triMesh);
 };

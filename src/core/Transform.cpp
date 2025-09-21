@@ -2,6 +2,7 @@
 #include "glfw/glfw3.h"
 #include <iostream>
 #include "../physics/RigidBody.h"
+#include "../physics/CharacterController.h"
 #include "bullet/btBulletCollisionCommon.h"
 #include "Entity.h"
 #include <vector>
@@ -44,6 +45,24 @@ glm::mat4 Transform::getGlobalMatrix()
 	return getLocalMatrix();
 }
 
+glm::vec3 Transform::getFront()
+{
+	glm::mat4 globalMatrix = getGlobalMatrix();
+	return globalMatrix[2];
+}
+
+glm::vec3 Transform::getRight()
+{
+	glm::mat4 globalMatrix = getGlobalMatrix();
+	return globalMatrix[0];
+}
+
+glm::vec3 Transform::getUp()
+{
+	glm::mat4 globalMatrix = getGlobalMatrix();
+	return globalMatrix[1];
+}
+
 glm::mat4 Transform::modelMatrix()
 {
 	
@@ -69,6 +88,28 @@ glm::mat4 Transform::modelMatrix()
 
 		glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), scale);
 		
+		trans = TranslationMatrix * RotationMatrix * scaleMatrix;
+	}
+	else if (auto cc = m_owner->getComponent<CharacterController>())
+	{
+		//m_owner->getComponent<RigidBody>()->hi();
+		btTransform t =  cc->getGhostObject()->getWorldTransform();
+		//m_ownerRb->getMotionState()->getWorldTransform(t);
+
+		btQuaternion rotation = t.getRotation();
+		btVector3 translate = t.getOrigin();
+
+
+		//std::cout << translate.getY() << " in " << m_owner-> name << "\n";
+
+		glm::mat4 RotationMatrix = glm::rotate(glm::mat4(1.0f), rotation.getAngle(),
+			glm::vec3(rotation.getAxis().getX(), rotation.getAxis().getY(), rotation.getAxis().getZ()));
+
+		glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f),
+			glm::vec3(translate.getX(), translate.getY(), translate.getZ()));
+
+		glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), scale);
+
 		trans = TranslationMatrix * RotationMatrix * scaleMatrix;
 	}
 	else

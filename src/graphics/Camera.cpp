@@ -21,10 +21,7 @@ glm::mat4 Camera::getViewMatrix()
 {
     glm::mat4 globalMatrix = getComponent<Transform>()->getGlobalMatrix();
     glm::vec3 pos = glm::vec3(globalMatrix[3].x, globalMatrix[3].y, globalMatrix[3].z);
-    glm::vec3 front = glm::vec3(globalMatrix[2]);
-    glm::vec3 right = glm::vec3(globalMatrix[0]);
-    glm::vec3 up = glm::vec3(globalMatrix[1]);
-    return glm::lookAt(pos, pos + front, up);
+    return glm::lookAt(pos, pos + transform->getFront(), transform->getUp());
 }
 
 void Camera::updateCameraVectors()

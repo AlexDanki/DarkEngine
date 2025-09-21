@@ -11,6 +11,7 @@ public:
 
 	Camera* mainCamera;
 	virtual void init() = 0;
+	void startEntitys();
 	virtual void update(float deltaTime);
 	virtual void render();
 	virtual void destroy();

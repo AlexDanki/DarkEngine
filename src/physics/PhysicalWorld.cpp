@@ -35,6 +35,12 @@ void PhysicalWorld::setRigidBody(btRigidBody* rb)
 	m_world->addRigidBody(rb);
 }
 
+void PhysicalWorld::setController(btKinematicCharacterController* controller)
+{
+	m_world->addAction(controller);
+}
+
+
 void PhysicalWorld::update(float deltaTime)
 {
 	//btScalar dt = (float)deltaTime;
@@ -49,5 +55,22 @@ void PhysicalWorld::update(float deltaTime)
 void PhysicalWorld::setDebugDrawer(BulletDebugDrawer* dd)
 {
 	m_world->setDebugDrawer(dd);
+	
+}
+
+void PhysicalWorld::debugDraw()
+{
+	for(int i = 0; i < m_world->getNumCollisionObjects(); i++ )
+	{
+		btCollisionObject* obj = m_world->getCollisionObjectArray()[i];
+		btTransform transform = obj->getWorldTransform();
+		btCollisionShape* shape = obj->getCollisionShape();
+
+		if(shape->getShapeType() == TRIANGLE_MESH_SHAPE_PROXYTYPE)
+		{
+			continue;
+		}
+		m_world->debugDrawObject(transform, shape, btVector3(1, 0.5, 0.2));
+	}
 	
 }

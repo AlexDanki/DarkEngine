@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bullet/btBulletDynamicsCommon.h"
+#include <bullet/BulletDynamics/Character/btKinematicCharacterController.h>
 
 class PhysicalWorld {
 public:
@@ -8,10 +9,13 @@ public:
 	void physicsInit();
 	void physicsShutdown();
 	void setRigidBody(btRigidBody* rb);
+	void setController(btKinematicCharacterController* controller);
+	btDiscreteDynamicsWorld* getWorld() { return m_world; };
 
 	void update(float deltaTime);
 	void setDebugDrawer(class BulletDebugDrawer* dd);
-	void debugDraw(){ m_world->debugDrawWorld(); }
+	void debugDraw();
+
 
 private:
 	btBroadphaseInterface* m_broadphase;
