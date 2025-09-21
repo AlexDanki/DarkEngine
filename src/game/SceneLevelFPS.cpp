@@ -7,6 +7,7 @@
 #include "../core/Transform.h"
 #include "bullet/btBulletDynamicsCommon.h"
 #include "../physics/RigidBody.h"
+#include "../physics/CharacterController.h"
 #include "bullet/btBulletCollisionCommon.h"
 #include "../util//MeshLoader.h"
 #include "../graphics/CameraFPS.h"
@@ -24,7 +25,8 @@ std::vector<btVector3> bulletVertices;
 void SceneLevelFPS::init()
 {
 
-	//Scene::init();
+	Scene::init();
+	
 	std::cout << "Iniciou o level 1 \n";
 	shader = new Shader("./shaders/vertex.glsl", "./shaders/fragment.glsl");
 
@@ -32,12 +34,15 @@ void SceneLevelFPS::init()
 	// GUY
 	guy = new Guy(shader);
 	auto guyTransform = guy->transform;
-	guyTransform->setPosition(glm::vec3(0, 10, -5.0));
+	guyTransform->setPosition(glm::vec3(0, 30, -5.0));
 	auto guyModel = createModel("./assets/models/guy/guy.obj");
 	guy->setModel(guyModel);
 	guy->setName("guy");
 	btCollisionShape* shape1 = new btCapsuleShape(0.3f, 1.2f);
-	guy->addComponent<RigidBody>(guyTransform->position, shape1, physicalWorld, false, 10, 0.5);
+	guy->addComponent<CharacterController>(guyTransform->position, physicalWorld, 0.3, 1.5, 1000);
+	auto cc = guy->getComponent<CharacterController>();
+	//cc->init(guyTransform->position, physicalWorld);
+	//guy->addComponent<RigidBody>(guyTransform->position, shape1, physicalWorld, false, 10, 0.5);
 	addEntity(guy);
 
 	mainCamera = new CameraFPS(shader, guy);
@@ -71,10 +76,13 @@ void SceneLevelFPS::init()
 	//guy->removeChild(guy2);
 
 	// GROUND
-	auto groundModel = createModel("./assets/models/ground/ground.obj");
+	auto groundModel = createModel("./assets/models/ground2/ground2.obj");
 	auto ground = new Entity(shader);
-	btCollisionShape* shape2 = new btBoxShape(btVector3(13, 0.01, 13));
-	ground->addComponent<RigidBody>(ground->getComponent<Transform>()->position, shape2, physicalWorld, true, 0, 0.5f);
+	btTriangleMesh* terrainMesh = new btTriangleMesh();
+	meshLoader.loadTriangles("./assets/models/ground2/ground2.obj", terrainMesh);
+	btBvhTriangleMeshShape* terrainShape = meshLoader.createTerrainShape(terrainMesh);
+	//btCollisionShape* shape2 = new btBoxShape(btVector3(13, 0.01, 13));
+	ground->addComponent<RigidBody>(ground->getComponent<Transform>()->position, terrainShape, physicalWorld, true, 0, 0.5f);
 	ground->setModel(groundModel);
 	addEntity(ground);
 
@@ -90,8 +98,11 @@ void SceneLevelFPS::init()
 	bunker->setModel(bunkerModel);
 	addEntity(bunker);
 	
+	//Scene::init();
+	Scene::startEntitys();
+	
 
-	Scene::init();
+	
 
 }
 

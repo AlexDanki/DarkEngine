@@ -6,9 +6,11 @@ glm::vec3 translation;
 glm::vec3 skew;
 glm::vec4 perspective;
 
-
 //Função usada para decompor a matriz
 glm::decompose(matrix, scale, rotationQuat, translation, skew, perspective);
+
+
+//##################################################################################
 
 📚 Conteúdos específicos que você pode estudar
 1. Álgebra Linear
@@ -42,3 +44,74 @@ Hierarquia de transformações
 Pipeline gráfico (model → view → projection)
 
 OpenGL / Vulkan / DirectX (se quiser ir fundo)
+
+//############################################################################
+REFAZER A FUNÇÃO ModelMatrix() no component Transform
+
+glm::mat4 Transform::modelMatrix()
+{
+    glm::mat4 trans = glm::mat4(1.0f);
+    glm::vec3 pos;
+    glm::quat rot;
+
+    if (m_ownerRb)
+    {
+        btTransform t;
+        m_ownerRb->getMotionState()->getWorldTransform(t);
+
+        btQuaternion q = t.getRotation();
+        btVector3 p = t.getOrigin();
+
+        pos = glm::vec3(p.getX(), p.getY(), p.getZ());
+        rot = glm::quat(q.getW(), q.getX(), q.getY(), q.getZ());
+    }
+    else if (auto cc = m_owner->getComponent<CharacterController>())
+    {
+        btTransform t = cc->getGhostObject()->getWorldTransform();
+
+        btQuaternion q = t.getRotation();
+        btVector3 p = t.getOrigin();
+
+        pos = glm::vec3(p.getX(), p.getY(), p.getZ());
+        rot = glm::quat(q.getW(), q.getX(), q.getY(), q.getZ());
+    }
+    else
+    {
+        pos = position;
+        rot = glm::quat(glm::radians(rotation));
+        curPosition = position;
+    }
+
+    glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f), pos);
+    glm::mat4 RotationMatrix = glm::mat4_cast(rot);
+    glm::mat4 ScaleMatrix = glm::scale(glm::mat4(1.0f), scale);
+
+    trans = TranslationMatrix * RotationMatrix * ScaleMatrix;
+    return trans;
+}
+
+// FUNÇÃO AUXILIAR
+glm::mat4 Transform::fromBulletTransform(const btTransform& t)
+{
+    btQuaternion q = t.getRotation();
+    btVector3 p = t.getOrigin();
+
+    glm::vec3 pos(p.getX(), p.getY(), p.getZ());
+    glm::quat rot(q.getW(), q.getX(), q.getY(), q.getZ());
+
+    glm::mat4 T = glm::translate(glm::mat4(1.0f), pos);
+    glm::mat4 R = glm::mat4_cast(rot);
+    glm::mat4 S = glm::scale(glm::mat4(1.0f), scale);
+
+    return T * R * S;
+}
+
+// ###############################################################################
+EXEMPLO PARA SETAR A DIREÇÃO DO CHARACTER_CONTROLLER NO GUY
+
+btVector3 walkDir(0, 0, 0);
+if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    walkDir += btVector3(0, 0, -1);
+// ... outras direções
+
+characterController->setWalkDirection(walkDir.normalized() * speed);

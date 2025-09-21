@@ -43,6 +43,7 @@
     <ClCompile Include="src\graphics\stb_image_loader.cpp" />
     <ClCompile Include="src\graphics\Texture.cpp" />
     <ClCompile Include="src\physics\BulletDebugDrawer.cpp" />
+    <ClCompile Include="src\physics\CharacterController.cpp" />
     <ClCompile Include="src\physics\PhysicalWorld.cpp" />
     <ClCompile Include="src\physics\RigidBody.cpp" />
     <ClCompile Include="src\util\MeshLoader.cpp" />
@@ -73,6 +74,7 @@
     <ClInclude Include="src\graphics\Texture.h" />
     <ClInclude Include="src\math\Math.h" />
     <ClInclude Include="src\physics\BulletDebugDrawer.h" />
+    <ClInclude Include="src\physics\CharacterController.h" />
     <ClInclude Include="src\physics\PhysicalWorld.h" />
     <ClInclude Include="src\physics\RigidBody.h" />
     <ClInclude Include="src\util\MeshLoader.h" />
@@ -151,7 +153,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\cppProjects\DarkEngine\external\sdl\include;C:\cppProjects\DarkEngine\external\glm;C:\cppProjects\DarkEngine\external;C:\cppProjects\DarkEngine\external\glad\include;C:\cppProjects\DarkEngine\external\glfw\include;C:\cppProjects\DarkEngine\external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\i5\Documents\vcpkg\installed\x64-windows\include\bullet;C:\cppProjects\DarkEngine\external\sdl\include;C:\cppProjects\DarkEngine\external\glm;C:\cppProjects\DarkEngine\external;C:\cppProjects\DarkEngine\external\glad\include;C:\cppProjects\DarkEngine\external\glfw\include;C:\cppProjects\DarkEngine\external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -168,7 +170,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\cppProjects\DarkEngine\external\sdl\include;C:\cppProjects\DarkEngine\external\glm;C:\cppProjects\DarkEngine\external;C:\cppProjects\DarkEngine\external\glad\include;C:\cppProjects\DarkEngine\external\glfw\include;C:\cppProjects\DarkEngine\external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\i5\Documents\vcpkg\installed\x64-windows\include\bullet;C:\cppProjects\DarkEngine\external\sdl\include;C:\cppProjects\DarkEngine\external\glm;C:\cppProjects\DarkEngine\external;C:\cppProjects\DarkEngine\external\glad\include;C:\cppProjects\DarkEngine\external\glfw\include;C:\cppProjects\DarkEngine\external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -185,7 +187,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\cppProjects\DarkEngine\external\sdl\include;C:\cppProjects\DarkEngine\external\glm;C:\cppProjects\DarkEngine\external;C:\cppProjects\DarkEngine\external\glad\include;C:\cppProjects\DarkEngine\external\glfw\include;C:\cppProjects\DarkEngine\external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\i5\Documents\vcpkg\installed\x64-windows\include\bullet;C:\cppProjects\DarkEngine\external\sdl\include;C:\cppProjects\DarkEngine\external\glm;C:\cppProjects\DarkEngine\external;C:\cppProjects\DarkEngine\external\glad\include;C:\cppProjects\DarkEngine\external\glfw\include;C:\cppProjects\DarkEngine\external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -202,7 +204,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\cppProjects\DarkEngine\external\sdl\include;C:\cppProjects\DarkEngine\external\glm;C:\cppProjects\DarkEngine\external;C:\cppProjects\DarkEngine\external\glad\include;C:\cppProjects\DarkEngine\external\glfw\include;C:\cppProjects\DarkEngine\external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\i5\Documents\vcpkg\installed\x64-windows\include\bullet;C:\cppProjects\DarkEngine\external\sdl\include;C:\cppProjects\DarkEngine\external\glm;C:\cppProjects\DarkEngine\external;C:\cppProjects\DarkEngine\external\glad\include;C:\cppProjects\DarkEngine\external\glfw\include;C:\cppProjects\DarkEngine\external\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

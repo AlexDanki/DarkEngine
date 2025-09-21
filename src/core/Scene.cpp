@@ -63,18 +63,20 @@ void Scene::init()
 	};
 
 	cubmapTexture = skybox->loadCubeMap(faces);
+	
+	physicalWorld->setDebugDrawer(renderer->getDebugDrawer());
+}
 
+void Scene::startEntitys()
+{
 	// Entitys Init
-	for(auto& pair : renderGroups)
+	for (auto& pair : renderGroups)
 	{
-		for(Entity* e : pair.second)
+		for (Entity* e : pair.second)
 		{
 			e->start();
 		}
-		std::cout << pair.second.size() << " \n";
 	}
-	
-	physicalWorld->setDebugDrawer(renderer->getDebugDrawer());
 }
 
 void Scene::update(float deltaTime)

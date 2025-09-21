@@ -23,7 +23,10 @@ void RigidBody::init()
 {
 
 	m_motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), m_position));
-	m_shape->calculateLocalInertia(m_mass, m_inertia);
+	if(m_mass > 0)
+	{
+		m_shape->calculateLocalInertia(m_mass, m_inertia);
+	}
 	btRigidBody::btRigidBodyConstructionInfo shapeRigidBodyCI(m_mass, m_motionState, m_shape, m_inertia);
 	rb = new btRigidBody(shapeRigidBodyCI);
 	rb->setRestitution(m_bounceness);
