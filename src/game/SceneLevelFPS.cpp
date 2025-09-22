@@ -12,6 +12,8 @@
 #include "../util//MeshLoader.h"
 #include "../graphics/CameraFPS.h"
 
+void mouseMovementCallback(GLFWwindow* window, double xPos, double yPos);
+
 Shader* shader;
 
 void Test();
@@ -27,6 +29,8 @@ void SceneLevelFPS::init()
 
 	Scene::init();
 	
+	glfwSetCursorPosCallback(m_engine->getWindow(), mouseMovementCallback);
+
 	std::cout << "Iniciou o level 1 \n";
 	shader = new Shader("./shaders/vertex.glsl", "./shaders/fragment.glsl");
 
@@ -54,6 +58,8 @@ void SceneLevelFPS::init()
 	mainCamera->setModel(camModel);
 	mainCamera->getEngine(m_engine);
 	addEntity(mainCamera);
+	
+	guy->setMainCamera(mainCamera);
 
 	// Shotgun
 	auto shotgunModel = createModel("./assets/models/shotgun/shotgun.obj");
@@ -136,4 +142,10 @@ void SceneLevelFPS::destroy()
 void Test()
 {
 	
+}
+
+void mouseMovementCallback(GLFWwindow* window, double xPos, double yPos)
+{
+	if(guy)
+		guy->updateMouseMovement(xPos, yPos);
 }

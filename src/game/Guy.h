@@ -9,9 +9,13 @@ public:
 	void start() override;
 	void update(float deltaTime) override;
 	void processKeyboard(GLFWwindow* window, float deltaTime) override;
+	void updateMouseMovement(double xPos, double yPos) override;
 	void setRigidbody(btRigidBody* _rb) { rb = _rb; };
 
 private:
+	double horizontalMovement;
+	double lastX;
+	bool firstMouse;
 	btRigidBody* rb;
 	btScalar linearDamping;
 	btScalar angularDamping;

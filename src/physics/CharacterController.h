@@ -17,6 +17,7 @@ public:
 	void update(float deltaTime) override;
 
 	void setWalkDirection(const btVector3 direction);
+	void setRotation(float angle);
 	void jump();
 	//bool canJump() const;
 

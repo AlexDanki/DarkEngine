@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "../graphics/Model.h"
 #include "../graphics/Shader.h"
+#include "../graphics/Camera.h"
 
 Entity::Entity(Shader* shader, Entity* _parent) :
 	transform(nullptr),
@@ -87,4 +88,9 @@ void Entity::update(float deltaTime)
 		}
 	}
 	
+}
+
+void Entity::setMainCamera(Camera* camera)
+{
+	mainCamera = camera;
 }

@@ -70,6 +70,8 @@ public:
 	virtual void start();
 	virtual void update(float deltaTime);
 	virtual void processKeyboard(GLFWwindow* window, float deltaTime) {};
+	virtual void updateMouseMovement(double xPos, double yPos) {};
+	virtual void setMainCamera(class Camera* camera);
 
 	// render
 	void draw();
@@ -77,6 +79,7 @@ public:
 	bool hasAShader() { return m_shader != nullptr; }
 
 protected:
+	class Camera* mainCamera;
 	std::string name = "Entity";
 	Entity* parent;
 	std::vector<Entity*> childrens;
