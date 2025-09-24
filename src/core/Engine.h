@@ -10,7 +10,11 @@ class Engine {
 public:
 	Engine();
 	~Engine();
+
+	bool allLoaded;
 	double m_deltaTime;
+
+
 	virtual void init();
 	void run();
 	virtual void shutdown();
@@ -19,11 +23,13 @@ public:
 	GLFWwindow* getWindow() const { return m_window; }
 
 protected:
+	
 	bool isRunning;
 	std::string m_nameWindow = "Game Engine";
 	class Scene* defaultScene;
 	std::vector<Scene*> scenes;
 	GLFWwindow* m_window;
+	GLFWwindow* loader_window;
 	SceneManager* sceneManager;
 	Renderer* renderer;
 	class PhysicalWorld* physicalWorld;

@@ -30,7 +30,7 @@ public:
 	Camera(class Shader* _shader, class Entity* _parent = nullptr);
 	glm::mat4 getViewMatrix();
 
-	void getEngine(class Engine* _engine) { m_engine = _engine; };
+	//void getEngine(class Engine* _engine) { m_engine = _engine; };
 	void updatePos(glm::vec3 pos);
 
 	virtual void processKeyBoard(GLFWwindow* window, float deltaTime) = 0;

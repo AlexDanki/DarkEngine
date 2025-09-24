@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include "../core/Entity.h"
+#include "../core/EngineContext.h"
 #include <iostream>
 #include <glfw/glfw3.h>
 #include "../graphics/Renderer.h"
@@ -131,6 +132,7 @@ void Scene::update(float deltaTime)
 
 void Scene::render()
 {
+
 	renderer->drawEntityes(renderGroups);
 	renderer->drawSkybox(skyShader, skybox, mainCamera, cubmapTexture);
 
@@ -188,6 +190,12 @@ Model* Scene::createModel(std::string path)
 	Model* model = new Model(path.c_str());
 	m_models.push_back(model);
 	return model;
+}
+
+void Scene::setMainCamera(Camera* camera)
+{
+	mainCamera = camera;
+	EngineContext::get().setMainCamera(camera);
 }
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {

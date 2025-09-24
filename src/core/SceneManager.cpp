@@ -22,6 +22,8 @@ void SceneManager::init()
 
 void SceneManager::changeScene(Scene* scene)
 {
+	if (m_currentScene == scene) return;
+
 	if (m_currentScene) {
 		m_currentScene->destroy();
 		//delete m_currentScene;

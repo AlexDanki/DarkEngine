@@ -2,7 +2,7 @@
 #include <iostream>
 #include "Triangle.h"
 #include "../graphics/Shader.h"
-#include "SceneLevelFPS.h"
+//#include "SceneLevelFPS.h"
 #include "../core/Scene.h"
 #include "../graphics/Camera.h"
 #include "../core/Window.h"
@@ -29,7 +29,7 @@ void Game::start()
 	//Engine::start();
 	//sceneManager->getCurrentScene()->init();
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	sceneManager->changeScene(new SceneLevelFPS(this));
+	//sceneManager->changeScene(new SceneLevelFPS(this));
 	//sceneManager->getCurrentScene()->init();
 	camera = sceneManager->getCurrentScene()->mainCamera;
 }

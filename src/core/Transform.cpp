@@ -24,7 +24,6 @@ void Transform::start()
 
 void Transform::update(float deltaTime)
 {
-	
 }
 
 glm::mat4 Transform::getLocalMatrix()

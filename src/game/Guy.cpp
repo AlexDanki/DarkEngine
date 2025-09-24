@@ -1,6 +1,8 @@
 #include "Guy.h"
 #include <glfw/glfw3.h>
 #include "../physics/CharacterController.h"
+#include "../graphics/Camera.h"
+#include "../core/EngineContext.h"
 
 float angle = 0;
 
@@ -8,7 +10,10 @@ Guy::Guy(Shader* shader, Entity* _parent) :
 	Entity(shader, _parent),
 	rb(nullptr),
 	linearDamping(0.1),
-	angularDamping(0.8)
+	angularDamping(0.8),
+	lastX(0.0),
+	firstMouse(true),
+	horizontalMovement(0.0)
 {
 	
 }
@@ -35,66 +40,55 @@ void Guy::update(float deltaTime)
 
 void Guy::processKeyboard(GLFWwindow* window, float deltaTime)
 {
-	float spd = 0.05;
 	btVector3 walkDir = btVector3(0, 0, 0);
 	auto cc = getComponent<CharacterController>();
+
+	auto camera = EngineContext::get().mainCamera;
+
+	if (!camera) return;
+
+	btVector3 camFront = btVector3(camera->transform->getFront().x, camera->transform->getFront().y, camera->transform->getFront().z);
+	
+	btVector3 camRight = btVector3(camera->transform->getRight().x, camera->transform->getRight().y, camera->transform->getRight().z);
+	
+
 	if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		walkDir += btVector3(0, 0, 1).normalized();
+		walkDir += camFront.normalized();//btVector3(0, 0, 1).normalized();
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		walkDir += btVector3(0, 0, -1).normalized();
+		walkDir -= camFront.normalized();
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		walkDir += btVector3(1, 0, 0).normalized();
+		walkDir += camRight.normalized();
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		walkDir += btVector3(-1, 0, 0).normalized();
+		walkDir -= camRight.normalized();
 	}
-	cc->setWalkDirection(walkDir * spd);
+	cc->setWalkDirection(walkDir * Guy::SPEED);
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		cc->jump();
+		cc->jump(Guy::JUMP_FORCE);
 	}
+}
 
-	if (!rb) return;
-	glm::mat4 globalMatrix = getComponent<Transform>()->getGlobalMatrix();
-	glm::vec3 pos = glm::vec3(globalMatrix[3].x, globalMatrix[3].y, globalMatrix[3].z);
-	//btRigidBody* rb = getComponent<RigidBody>()->rb;
-	
-	btVector3 newPosition = btVector3(pos.x, pos.y, pos.z);
-	float speed = 3;
-
-	btVector3 currentVelocity = rb->getLinearVelocity();
-	btVector3 moveDirection(0, currentVelocity.getY(), 0);
-
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+void Guy::updateMouseMovement(double xPos, double yPos)
+{
+	if(firstMouse)
 	{
-		btVector3 forward = btVector3(transform->getFront().x, transform->getFront().y, transform->getFront().z);
-		moveDirection += forward.normalized() * speed;
+		lastX = xPos;
+		firstMouse = false;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-	{
-		btVector3 backward = btVector3(transform->getFront().x, transform->getFront().y, transform->getFront().z);
-		moveDirection -= backward.normalized() * speed;
-	}
+	double xOffset = xPos - lastX;
+	lastX = xPos;
 
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-	{
-		btVector3 left = btVector3(transform->getRight().x, transform->getRight().y, transform->getRight().z);
-		moveDirection += left.normalized() * speed;
-	}
+	double sensitivity = 0.002;
+	double angle = xOffset * sensitivity;
+	getComponent<CharacterController>()->setRotation(-angle);
 
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-	{
-		btVector3 right = btVector3(transform->getRight().x, transform->getRight().y, transform->getRight().z);
-		moveDirection -= right.normalized() * speed;
-	}
-	rb->activate(true);
-	rb->setLinearVelocity(moveDirection);
 }

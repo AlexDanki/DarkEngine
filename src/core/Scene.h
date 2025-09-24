@@ -10,6 +10,7 @@ public:
 	Scene(class Engine* engine);
 
 	Camera* mainCamera;
+
 	virtual void init() = 0;
 	void startEntitys();
 	virtual void update(float deltaTime);
@@ -18,6 +19,8 @@ public:
 	void addEntity(class Entity* entity);
 	void processInput(class GLFWwindow* window);
 	class Renderer* getRenderer()const { return renderer; }
+	void setMainCamera(Camera* camera);
+	virtual void loadData() { }
 
 protected:
 	std::vector<class Entity*> m_entities;
@@ -25,6 +28,7 @@ protected:
 	class Engine* m_engine;
 	std::map<class Shader*, std::vector<class Entity*>> renderGroups;
 	bool m_updatingEntities;
+	bool allLoaded = false;
 	class Renderer* renderer;
 	class PhysicalWorld* physicalWorld;
 	std::vector<class Model* > m_models;

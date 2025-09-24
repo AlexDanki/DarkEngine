@@ -17,7 +17,8 @@ public:
 	void update(float deltaTime) override;
 
 	void setWalkDirection(const btVector3 direction);
-	void jump();
+	void setRotation(float angle);
+	void jump(float jumpForce);
 	//bool canJump() const;
 
 	btKinematicCharacterController* getController() const { return controller; }

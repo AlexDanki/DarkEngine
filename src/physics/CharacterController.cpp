@@ -61,11 +61,27 @@ void CharacterController::setWalkDirection(const btVector3 direction)
 	controller->setWalkDirection(direction);
 }
 
-void CharacterController::jump()
+void CharacterController::setRotation(float angle)
+{
+	btTransform transform = controller->getGhostObject()->getWorldTransform();
+	btQuaternion currentRotation = transform.getRotation();
+
+	// Cria rotação incremental
+	btQuaternion deltaRotation(btVector3(0, 1, 0), angle);
+
+	// Combina com a rotação atual
+	btQuaternion newRotation = deltaRotation * currentRotation;
+	newRotation.normalize();
+
+	transform.setRotation(newRotation);
+	controller->getGhostObject()->setWorldTransform(transform);
+}
+
+void CharacterController::jump(float jumpForce)
 {
 	if(controller->canJump())
 	{
-		controller->jump();
+		controller->jump(btVector3(0, jumpForce, 0));
 	}
 }
 
