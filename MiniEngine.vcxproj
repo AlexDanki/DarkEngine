@@ -28,9 +28,10 @@
     <ClCompile Include="src\core\TimeManager.cpp" />
     <ClCompile Include="src\core\DefaultScene.cpp" />
     <ClCompile Include="src\core\Transform.cpp" />
+    <ClCompile Include="src\game\DarkGame\DarkGame.cpp" />
     <ClCompile Include="src\game\Game.cpp" />
     <ClCompile Include="src\game\Guy.cpp" />
-    <ClCompile Include="src\game\SceneLevelFPS.cpp" />
+    <ClCompile Include="src\game\DarkGame\SceneLevelFPS.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\CameraFPS.cpp" />
     <ClCompile Include="src\graphics\Mesh.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="external\glad\include\KHR\khrplatform.h" />
     <ClInclude Include="src\core\Component.h" />
     <ClInclude Include="src\core\Engine.h" />
+    <ClInclude Include="src\core\EngineContext.h" />
     <ClInclude Include="src\core\Entity.h" />
     <ClInclude Include="src\core\Scene.h" />
     <ClInclude Include="src\core\SceneManager.h" />
@@ -60,9 +62,10 @@
     <ClInclude Include="src\core\DefaultScene.h" />
     <ClInclude Include="src\core\Transform.h" />
     <ClInclude Include="src\core\Window.h" />
+    <ClInclude Include="src\game\DarkGame\DarkGame.h" />
     <ClInclude Include="src\game\Game.h" />
     <ClInclude Include="src\game\Guy.h" />
-    <ClInclude Include="src\game\SceneLevelFPS.h" />
+    <ClInclude Include="src\game\DarkGame\SceneLevelFPS.h" />
     <ClInclude Include="src\game\Triangle.h" />
     <ClInclude Include="src\graphics\Camera.h" />
     <ClInclude Include="src\graphics\CameraFPS.h" />
@@ -77,6 +80,7 @@
     <ClInclude Include="src\physics\CharacterController.h" />
     <ClInclude Include="src\physics\PhysicalWorld.h" />
     <ClInclude Include="src\physics\RigidBody.h" />
+    <ClInclude Include="src\util\LoadData.h" />
     <ClInclude Include="src\util\MeshLoader.h" />
   </ItemGroup>
   <ItemGroup>

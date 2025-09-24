@@ -89,8 +89,3 @@ void Entity::update(float deltaTime)
 	}
 	
 }
-
-void Entity::setMainCamera(Camera* camera)
-{
-	mainCamera = camera;
-}

@@ -2,6 +2,7 @@
 #include <glfw/glfw3.h>
 #include "../physics/CharacterController.h"
 #include "../graphics/Camera.h"
+#include "../core/EngineContext.h"
 
 float angle = 0;
 
@@ -39,17 +40,16 @@ void Guy::update(float deltaTime)
 
 void Guy::processKeyboard(GLFWwindow* window, float deltaTime)
 {
-	float spd = 0.03;
 	btVector3 walkDir = btVector3(0, 0, 0);
 	auto cc = getComponent<CharacterController>();
-	std::cout << mainCamera << "\n";
-	if (!mainCamera) return;
 
-	std::cout << "Passou por aqui msm kkk\n";
+	auto camera = EngineContext::get().mainCamera;
 
-	btVector3 camFront = btVector3(mainCamera->transform->getFront().x, mainCamera->transform->getFront().y, mainCamera->transform->getFront().z);
+	if (!camera) return;
+
+	btVector3 camFront = btVector3(camera->transform->getFront().x, camera->transform->getFront().y, camera->transform->getFront().z);
 	
-	btVector3 camRight = btVector3(mainCamera->transform->getRight().x, mainCamera->transform->getRight().y, mainCamera->transform->getRight().z);
+	btVector3 camRight = btVector3(camera->transform->getRight().x, camera->transform->getRight().y, camera->transform->getRight().z);
 	
 
 	if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -68,11 +68,11 @@ void Guy::processKeyboard(GLFWwindow* window, float deltaTime)
 	{
 		walkDir -= camRight.normalized();
 	}
-	cc->setWalkDirection(walkDir * spd);
+	cc->setWalkDirection(walkDir * Guy::SPEED);
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		cc->jump();
+		cc->jump(Guy::JUMP_FORCE);
 	}
 }
 

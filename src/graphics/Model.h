@@ -31,6 +31,9 @@ public:
     vector<Mesh>    meshes;
     string directory;
     bool gammaCorrection;
+    bool loaded = false;
+    const aiScene* loadedScene;
+    Assimp::Importer importer;
 
     // constructor, expects a filepath to a 3D model.
     Model(string const& path, bool gamma = false) : gammaCorrection(gamma)
@@ -44,6 +47,11 @@ public:
 		for (unsigned int i = 0; i < meshes.size(); i++)
 			meshes[i].setupMesh();
 	}
+
+    bool loadedWithSucess(const aiScene* scene)
+    {
+        return scene && !(scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) && scene->mRootNode && scene->HasMeshes();
+    }
 
     // draws the model, and thus all its meshes
     void Draw(Shader& shader)

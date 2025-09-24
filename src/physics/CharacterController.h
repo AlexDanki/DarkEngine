@@ -18,7 +18,7 @@ public:
 
 	void setWalkDirection(const btVector3 direction);
 	void setRotation(float angle);
-	void jump();
+	void jump(float jumpForce);
 	//bool canJump() const;
 
 	btKinematicCharacterController* getController() const { return controller; }

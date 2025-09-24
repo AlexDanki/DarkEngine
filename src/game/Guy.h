@@ -13,10 +13,16 @@ public:
 	void setRigidbody(btRigidBody* _rb) { rb = _rb; };
 
 private:
+
+	
 	double horizontalMovement;
 	double lastX;
 	bool firstMouse;
 	btRigidBody* rb;
 	btScalar linearDamping;
 	btScalar angularDamping;
+
+	// Guy attributes
+	const float JUMP_FORCE = 5.0f;
+	const float SPEED = 0.05f;
 };

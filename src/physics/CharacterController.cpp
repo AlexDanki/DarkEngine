@@ -77,11 +77,11 @@ void CharacterController::setRotation(float angle)
 	controller->getGhostObject()->setWorldTransform(transform);
 }
 
-void CharacterController::jump()
+void CharacterController::jump(float jumpForce)
 {
 	if(controller->canJump())
 	{
-		controller->jump();
+		controller->jump(btVector3(0, jumpForce, 0));
 	}
 }
 

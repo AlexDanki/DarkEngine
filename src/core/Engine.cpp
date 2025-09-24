@@ -2,11 +2,11 @@
 #include "Engine.h"
 #include <iostream> 
 #include "TimeManager.h"
-#include "../Game/SceneLevelFPS.h"
 #include "DefaultScene.h"
 #include "../physics/PhysicalWorld.h"
 #include "Window.h"
 #include <SDL.h>
+#include "../util/LoadData.h"
 
 void frameBufferResizeCallback(GLFWwindow* window, int width, int height);
 
@@ -15,13 +15,16 @@ double tempo = 0;
 TimeManager timeManager(60);
 const float FPS = 60;
 
+Data::LoadData loader;
+
 Engine::Engine():
 	m_window(nullptr), 
     isRunning(false), 
     m_deltaTime(0.0), 
     sceneManager(nullptr), 
     defaultScene(nullptr),
-	renderer(nullptr)
+	renderer(nullptr),
+    allLoaded(false)
 {
 	sceneManager = new SceneManager(defaultScene);
     defaultScene = new DefaultScene(this);
@@ -41,21 +44,30 @@ void Engine::init()
 
     WindowInfo ws;
     /* Create a windowed mode window and its OpenGL context */
-    m_window = glfwCreateWindow(ws.Width, ws.Height, ws.WindowName.c_str(), NULL, NULL);
-    if (!m_window)
+    loader_window = glfwCreateWindow(1, 1, ws.WindowName.c_str(), NULL, NULL);
+    
+    if (!loader_window)
     {
         glfwTerminate();
-        std::cerr << "Failed to initialize window" << std::endl;
+        std::cerr << "Failed to initialize window's" << std::endl;
     }
 
     /* Make the window's context current */
-    glfwMakeContextCurrent(m_window);
-    glfwSetFramebufferSizeCallback(m_window, frameBufferResizeCallback);
+    glfwMakeContextCurrent(loader_window);
+    glfwSetFramebufferSizeCallback(loader_window, frameBufferResizeCallback);
     glfwSwapInterval(1);
     
 	renderer->init();
     renderer->setClearScreen(0.6f, 0.8f, 0.9f, 1.0f);
     sceneManager->changeScene(defaultScene);
+
+    loader.Load();
+    if(loader.AllDataLoaded())
+    {
+        glfwDestroyWindow(loader_window);
+        m_window = glfwCreateWindow(ws.Width, ws.Height, ws.WindowName.c_str(), NULL, NULL);
+        glfwMakeContextCurrent(m_window);
+    }
     //start();
 
     m_ticksCount = SDL_GetTicks();
@@ -123,11 +135,12 @@ void Engine::update()
 void Engine::render()
 {
     /* Render here */
-	renderer->beginFrame();
 
-	sceneManager->renderCurrentScene(renderer);
+    renderer->beginFrame();
+
+    sceneManager->renderCurrentScene(renderer);
     draw();
-
+    
     /* Swap front and back buffers */
     glfwSwapBuffers(m_window);
 }
