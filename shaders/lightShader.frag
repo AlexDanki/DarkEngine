@@ -14,12 +14,5 @@ uniform sampler2D texture_specular2;
 
 void main()
 {
-    
-    float ambienteStrenght = 0.2f;
-
-    vec3 ambiente = lightColor * ambienteStrenght;
-
-    vec3 diffuse = texture(texture_diffuse1, TexCoord).rgb;
-
-    FragColor = vec4(diffuse * ambiente, 1.0);
+    FragColor = texture(texture_diffuse1, TexCoord);
 }

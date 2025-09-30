@@ -10,9 +10,9 @@
 Scene* curScene;
 Camera* camera;
 bool firstMouse = true;
-WindowInfo ws;
-float lastX =  ws.Width/ 2.0f;
-float lastY = ws.Height / 2.0f;
+//WindowInfo ws;
+//float lastX =  ws.Width/ 2.0f;
+//float lastY = ws.Height / 2.0f;
 
 Game::Game()
 {

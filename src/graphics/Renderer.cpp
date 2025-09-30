@@ -51,8 +51,11 @@ void Renderer::drawEntityes(std::map<Shader*, std::vector<Entity*>> renderGroups
 		Shader* shader = pair.first;
 
 		for (Entity* e : pair.second) {
-			if(e->m_state == E_ACTIVE)
+			if (e->m_state == E_ACTIVE)
+			{
+				shader->use();
 				e->draw();
+			}
 		}
 	}
 }
@@ -92,7 +95,7 @@ void Renderer::drawSkybox(Shader* skyShader, Skybox* skybox, Camera* camera, uns
 glm::mat4 Renderer::projMatrix()
 {
 	glm::mat4 projection;
-	projection = glm::perspective(glm::radians(45.0f), 900.0f / 600.0f, 0.3f, 100.0f);
+	projection = glm::perspective(glm::radians(45.0f), 900.0f / 600.0f, 0.1f, 100.0f);
 	return projection;
 }
 

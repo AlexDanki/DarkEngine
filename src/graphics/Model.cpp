@@ -6,26 +6,17 @@ unsigned int TextureFromFile(const char* path, const string& directory, bool gam
 	return 0;
 }
 
-void Model::loadModel(string const& path)
+void Model::loadModel(const aiScene* _scene, string const& path)
 {
+
     // read file via ASSIMP
     //ssimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs); //aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals 
-    // check for errors
-
-    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
-    {
-        cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << endl;
-        return;
-    }
-
-    loadedScene = scene;
     
     // retrieve the directory path of the filepath
     directory = path.substr(0, path.find_last_of('/'));
 
     // process ASSIMP's root node recursively
-    processNode(scene->mRootNode, scene);
+    processNode(_scene->mRootNode, _scene);
 }
 
 void Model::processNode(aiNode* node, const aiScene* scene)
@@ -170,8 +161,8 @@ unsigned int Model::TextureFromFile(const char* path, const string& directory, b
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         //stbi_set_flip_vertically_on_load(true);
         stbi_image_free(data);

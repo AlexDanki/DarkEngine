@@ -17,6 +17,7 @@
 void mouseMovementCallback(GLFWwindow* window, double xPos, double yPos);
 
 Shader* shader;
+Shader* lightShader;
 Entity* guy;
 Entity* shotgun;
 Camera* cameraFps;
@@ -29,8 +30,8 @@ std::atomic<bool> loadedModels = false;
 
 void SceneLevelFPS::init()
 {
-	Data::LoadData loader;
-	loader.Load();
+	Data::LoadData* loader = m_engine->getLoader();
+	//loader.Load();
 
 	m_engine->allLoaded = false;
 
@@ -39,56 +40,86 @@ void SceneLevelFPS::init()
 	glfwSetCursorPosCallback(m_engine->getWindow(), mouseMovementCallback);
 
 	std::cout << "Iniciou o level 1 \n";
+
+	// /!\ LEMBRAR DE SEMPRE FAZER UP DE VIEW DA CÂMERA PARA CADA NOVO SHADER
 	shader = new Shader("./shaders/vertex.glsl", "./shaders/fragment.glsl");
+	lightShader = new Shader("./shaders/vertex.glsl", "./shaders/lightShader.frag");
 
-	// GUY
-	guy = new Guy(shader);
-	auto guyTransform = guy->transform;
-	guyTransform->setPosition(glm::vec3(0, 30, -5.0));
-	guy->setModel(loader.guyModel);
-	guy->setName("guy");
-	btCollisionShape* shape1 = new btCapsuleShape(0.3f, 1.2f);
-	guy->addComponent<CharacterController>(guyTransform->position, physicalWorld, 0.3, 1.5, 1000);
-	auto cc = guy->getComponent<CharacterController>();
-	addEntity(guy);
+	if(loader->AllDataLoaded())
+	{
+		// GUY
+		guy = new Guy(shader);
+		auto guyTransform = guy->transform;
+		guyTransform->setPosition(glm::vec3(5, 0.5, -5.0));
+		//guy->setModel(loader.guyModel);
+		guy->setName("guy");
+		btCollisionShape* shape1 = new btCapsuleShape(3.0f, 3.5f);
+		guy->addComponent<CharacterController>(guyTransform->position, physicalWorld, 0.3, 1.5, 0.2);
+		auto cc = guy->getComponent<CharacterController>();
+		addEntity(guy);
 
-	// Criando ojeto CameraFps
-	cameraFps = new CameraFPS(shader, guy);
-	auto camTransform = cameraFps->transform;
-	camTransform->setPosition(glm::vec3(0, 1, 0.0));
-	camTransform->setScale(glm::vec3(0.1, 0.1, 0.1));
-	camTransform->setRotation(glm::vec3(45.0, 0.0, 0.0));
-	cameraFps->setModel(loader.camModel);
-	Scene::setMainCamera(cameraFps); // Seta como camera principal no jogo
-	Scene::addEntity(cameraFps);
-	
-	// Shotgun
-	shotgun = new Entity(shader, mainCamera);
-	auto shotgunTransform = shotgun->getComponent<Transform>();
-	shotgunTransform->setPosition(glm::vec3(-2, -1.5, 4));
-	shotgunTransform->setScale(glm::vec3(3, 3, 3));
-	shotgun->setModel(loader.shotgunModel);
-	Scene::addEntity(shotgun);
+		// CameraFps
+		cameraFps = new CameraFPS(shader, guy);
+		auto camTransform = cameraFps->transform;
+		camTransform->setPosition(glm::vec3(0, 0.5, -0.3));
+		camTransform->setScale(glm::vec3(0.1, 0.1, 0.1));
+		camTransform->setRotation(glm::vec3(45.0, 0.0, 0.0));
+		//cameraFps->setModel(loader.camModel);
+		Scene::setMainCamera(cameraFps); // Seta como camera principal no jogo
+		Scene::addEntity(cameraFps);
 
-	// GROUND
-	auto ground = new Entity(shader);
-	btTriangleMesh* terrainMesh = new btTriangleMesh();
-	meshLoader.loadTriangles("./assets/models/ground2/ground2.obj", terrainMesh, loader.groundModel->loadedScene);
-	btBvhTriangleMeshShape* terrainShape = meshLoader.createTerrainShape(terrainMesh);
-	ground->addComponent<RigidBody>(ground->getComponent<Transform>()->position, terrainShape, physicalWorld, true, 0, 0.5f);
-	ground->setModel(loader.groundModel);
-	Scene::addEntity(ground);
+		// SHOTGUN
+		shotgun = new Entity(shader, mainCamera);
+		auto shotgunTransform = shotgun->getComponent<Transform>();
+		shotgunTransform->setPosition(glm::vec3(-1.2, -1.2, 2.8));
+		shotgunTransform->setScale(glm::vec3(1.5, 1.5, 1.5));
+		Model* shotgunModel = Scene::createModel(loader->shotgunScene, loader->shotgunModelPath);
+		shotgun->setModel(shotgunModel);
+		Scene::addEntity(shotgun);
 
-	// BUNKER
-	auto bunker = new Entity(shader);
-	auto bunkerTransform = bunker->getComponent<Transform>();
-	bunkerTransform->setPosition(glm::vec3(0, 0.2, 0));
-	bunkerTransform->setScale(glm::vec3(0.5, 0.5, 0.5));
-	meshLoader.loadVertices("./assets/models/ruby/ruby.obj", bulletVertices);
-	btConvexHullShape* shape3 = meshLoader.createShape(bulletVertices);
-	bunker->addComponent<RigidBody>(bunker->getComponent<Transform>()->position, shape3, physicalWorld, true, 0, 0.5f);
-	bunker->setModel(loader.bunkerModel);
-	Scene::addEntity(bunker);
+		// GROUND
+		auto ground = new Entity(shader);
+		btTriangleMesh* terrainMesh = new btTriangleMesh();
+		meshLoader.loadTriangles("./assets/models/ground2/ground2.obj", terrainMesh, loader->groundScene);
+		btBvhTriangleMeshShape* terrainShape = meshLoader.createTerrainShape(terrainMesh);
+		ground->addComponent<RigidBody>(ground->getComponent<Transform>()->position, terrainShape, physicalWorld, true, 0, 0.5f);
+		Model* goundModel = Scene::createModel(loader->groundScene, loader->groundModelPath);
+		ground->setModel(goundModel);
+		Scene::addEntity(ground);
+
+		// BUNKER
+		auto bunker = new Entity(shader);
+		auto bunkerTransform = bunker->getComponent<Transform>();
+		bunkerTransform->setPosition(glm::vec3(-2.0, 0.2, 0));
+		bunkerTransform->setScale(glm::vec3(0.2, 0.2, 0.2));
+		meshLoader.loadVertices("./assets/models/ruby/ruby.obj", bulletVertices);
+		btConvexHullShape* shape3 = meshLoader.createShape(bulletVertices);
+		bunker->addComponent<RigidBody>(bunker->getComponent<Transform>()->position, shape3, physicalWorld, true, 0, 0.5f);
+		Model* bunkerModel = Scene::createModel(loader->bunkerScene, loader->bunkerModelPath);
+		bunker->setModel(bunkerModel);
+		Scene::addEntity(bunker);
+
+		// BUILD
+		auto build = new Entity(shader);
+		btTriangleMesh* terrainMesh2 = new btTriangleMesh();
+		meshLoader.loadTriangles("./assets/models/build/build.obj", terrainMesh2, loader->buildScene);
+		btBvhTriangleMeshShape* buildShape = meshLoader.createTerrainShape(terrainMesh2);
+		build->addComponent<RigidBody>(build->getComponent<Transform>()->position, buildShape, physicalWorld, true, 0, 0.5f);
+		Model* buildModel = Scene::createModel(loader->buildScene, loader->buildModelPath);
+		build->setModel(buildModel);
+		Scene::addEntity(build);
+
+
+		//LIGHT1
+		auto light = new Entity(lightShader);
+		auto lightTransform = light->getComponent<Transform>();
+		lightTransform->setPosition(glm::vec3(-1.3, 2.75, 0.0));
+		lightTransform->setScale(glm::vec3(0.06, 0.06, 0.06));
+		Model* lightModel = Scene::createModel(loader->lightScene, loader->lightModelPath);
+		light->setModel(lightModel);
+		Scene::addEntity(light);
+
+	}
 	
 	//Scene::init();
 
@@ -99,11 +130,13 @@ void SceneLevelFPS::init()
 
 void SceneLevelFPS::update(float deltaTime)
 {
+	
 	Scene::update(deltaTime);
 	loadData();
 	//std::cout << m_engine->allLoaded << "\n";
 	//mainCamera->updatePos(guy->getComponent<Transform>()->position);
 	renderer->UpdateCameraView(mainCamera, shader);
+	renderer->UpdateCameraView(mainCamera, lightShader);
 	if (!mainCamera) {
 		std::cerr << "mainCamera is null!" << std::endl;
 		return;
@@ -117,7 +150,7 @@ void SceneLevelFPS::update(float deltaTime)
 void SceneLevelFPS::render()
 {	
 	Scene::render();
-	
+	//std::cerr << "SceneFPS drawnning...\n";
 }
 
 void SceneLevelFPS::destroy()
@@ -125,6 +158,7 @@ void SceneLevelFPS::destroy()
 	Scene::destroy();
 
 	delete shader;
+	delete lightShader;
 }
 
 void SceneLevelFPS::loadData()

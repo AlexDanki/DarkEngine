@@ -5,6 +5,6 @@
 struct WindowInfo
 {
     std::string WindowName;
-    int Width = 1000;
-    int Height = 700;
+    int Width = 900;
+    int Height = 600;
 };

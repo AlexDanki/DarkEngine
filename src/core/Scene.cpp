@@ -185,9 +185,9 @@ void Scene::addEntity(Entity* entity)
 
 
 
-Model* Scene::createModel(std::string path)
+Model* Scene::createModel(const aiScene* scene, std::string const& path)
 {
-	Model* model = new Model(path.c_str());
+	Model* model = new Model(scene, path);
 	m_models.push_back(model);
 	return model;
 }

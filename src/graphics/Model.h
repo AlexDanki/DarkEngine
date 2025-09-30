@@ -28,17 +28,17 @@ class Model
 public:
     // model data 
     vector<graph::Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-    vector<Mesh>    meshes;
+    vector<Mesh> meshes;
     string directory;
     bool gammaCorrection;
     bool loaded = false;
     const aiScene* loadedScene;
-    Assimp::Importer importer;
+    //Assimp::Importer importer;
 
     // constructor, expects a filepath to a 3D model.
-    Model(string const& path, bool gamma = false) : gammaCorrection(gamma)
+    Model(const aiScene* _scene ,string const& path, bool gamma = false) : gammaCorrection(gamma)
     {
-        loadModel(path);
+        loadModel(_scene, path);
         setupModel();
     }
 
@@ -57,12 +57,16 @@ public:
     void Draw(Shader& shader)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
+        {
+            //shader.use();
             meshes[i].draw(shader);
+        }
+            
     }
 
 private:
     // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
-    void loadModel(string const& path);
+    void loadModel(const aiScene* scene, string const& path);
 
     // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
     void processNode(aiNode* node, const aiScene* scene);

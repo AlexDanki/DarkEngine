@@ -47,6 +47,7 @@
     <ClCompile Include="src\physics\CharacterController.cpp" />
     <ClCompile Include="src\physics\PhysicalWorld.cpp" />
     <ClCompile Include="src\physics\RigidBody.cpp" />
+    <ClCompile Include="src\util\LoadData.cpp" />
     <ClCompile Include="src\util\MeshLoader.cpp" />
   </ItemGroup>
   <ItemGroup>

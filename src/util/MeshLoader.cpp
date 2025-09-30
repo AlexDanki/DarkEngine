@@ -46,6 +46,7 @@ void MeshLoader::loadTriangles(const std::string& meshPath, btTriangleMesh* triM
     }
 
     for (unsigned int m = 0; m < loadedScene->mNumMeshes; m++) {
+
         const aiMesh* mesh = loadedScene->mMeshes[m];
 
         for (unsigned int i = 0; i < mesh->mNumFaces; i++) {

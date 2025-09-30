@@ -2,6 +2,7 @@
 #include <map>
 #include <vector>
 #include "../graphics/Camera.h"
+#include <assimp/scene.h>
 #include <string>
 
 
@@ -33,6 +34,6 @@ protected:
 	class PhysicalWorld* physicalWorld;
 	std::vector<class Model* > m_models;
 
-	class Model* createModel(std::string path);
+	class Model* createModel(const aiScene* scene, std::string const& path);
 	
 };

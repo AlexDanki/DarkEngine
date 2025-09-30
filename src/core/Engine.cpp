@@ -6,16 +6,15 @@
 #include "../physics/PhysicalWorld.h"
 #include "Window.h"
 #include <SDL.h>
-#include "../util/LoadData.h"
 
 void frameBufferResizeCallback(GLFWwindow* window, int width, int height);
 
 bool start = false;
 double tempo = 0;
 TimeManager timeManager(60);
-const float FPS = 60;
+const float FPS = 5;
 
-Data::LoadData loader;
+//Data::LoadData loader;
 
 Engine::Engine():
 	m_window(nullptr), 
@@ -24,11 +23,14 @@ Engine::Engine():
     sceneManager(nullptr), 
     defaultScene(nullptr),
 	renderer(nullptr),
-    allLoaded(false)
+    allLoaded(false),
+    m_monitor(nullptr),
+    loader(nullptr)
 {
 	sceneManager = new SceneManager(defaultScene);
     defaultScene = new DefaultScene(this);
     renderer = new Renderer();
+    loader = new Data::LoadData();
 }
 
 Engine::~Engine()
@@ -37,42 +39,45 @@ Engine::~Engine()
 
 void Engine::init()
 {
-
-    /* Initialize the library */
-    if (!glfwInit())
-        std::cerr << "Failed to initialize GLFW" << std::endl;;
-
-    WindowInfo ws;
-    /* Create a windowed mode window and its OpenGL context */
-    loader_window = glfwCreateWindow(1, 1, ws.WindowName.c_str(), NULL, NULL);
-    
-    if (!loader_window)
+    loader->Load();
+    if (loader->AllDataLoaded())
     {
-        glfwTerminate();
-        std::cerr << "Failed to initialize window's" << std::endl;
-    }
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent(loader_window);
-    glfwSetFramebufferSizeCallback(loader_window, frameBufferResizeCallback);
-    glfwSwapInterval(1);
-    
-	renderer->init();
-    renderer->setClearScreen(0.6f, 0.8f, 0.9f, 1.0f);
-    sceneManager->changeScene(defaultScene);
+        /* Initialize the library */
+        if (!glfwInit())
+            std::cerr << "Failed to initialize GLFW" << std::endl;;
 
-    loader.Load();
-    if(loader.AllDataLoaded())
-    {
-        glfwDestroyWindow(loader_window);
-        m_window = glfwCreateWindow(ws.Width, ws.Height, ws.WindowName.c_str(), NULL, NULL);
+        m_monitor = glfwGetPrimaryMonitor();
+        const GLFWvidmode* mode = glfwGetVideoMode(m_monitor);
+
+        WindowInfo ws;
+        glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+        /* Create a windowed mode window and its OpenGL context */
+        m_window = glfwCreateWindow(mode->width, mode->height, ws.WindowName.c_str(), nullptr, nullptr);
+
+        if (!m_window)
+        {
+            glfwTerminate();
+            std::cerr << "Failed to initialize window's" << std::endl;
+        }
+
+        /* Make the window's context current */
         glfwMakeContextCurrent(m_window);
-    }
-    //start();
+        glfwSetFramebufferSizeCallback(m_window, frameBufferResizeCallback);
+        glfwSwapInterval(1);
 
-    m_ticksCount = SDL_GetTicks();
-    isRunning = true;
-    
+        renderer->init();
+        renderer->setClearScreen(0.6f, 0.8f, 0.9f, 1.0f);
+        sceneManager->changeScene(defaultScene);
+        //start();
+
+        m_ticksCount = SDL_GetTicks();
+        isRunning = true;
+    }
+    else
+    {
+        std::cerr << "Erro ao carregar modelos 3D\n";
+    }
 }
 
 void Engine::run()

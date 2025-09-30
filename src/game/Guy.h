@@ -14,7 +14,6 @@ public:
 
 private:
 
-	
 	double horizontalMovement;
 	double lastX;
 	bool firstMouse;
@@ -23,6 +22,6 @@ private:
 	btScalar angularDamping;
 
 	// Guy attributes
-	const float JUMP_FORCE = 5.0f;
+	const float JUMP_FORCE = 4.0f;
 	const float SPEED = 0.05f;
 };

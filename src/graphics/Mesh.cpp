@@ -20,8 +20,11 @@ void Mesh::draw(Shader& shader)
     unsigned int specularNr = 1;
     unsigned int normalNr = 1;
     unsigned int heightNr = 1;
+    //shader.use();
+
     for (unsigned int i = 0; i < textures.size(); i++)
     {
+        
         glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
         // retrieve texture number (the N in diffuse_textureN)
         std::string number;
@@ -40,8 +43,12 @@ void Mesh::draw(Shader& shader)
         // and finally bind the texture
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
+    
+    //shader.setVec3("objectColor", glm::vec3(0.0f, 0.0f, 0.0f));
+    shader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
     // draw mesh
+    
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
